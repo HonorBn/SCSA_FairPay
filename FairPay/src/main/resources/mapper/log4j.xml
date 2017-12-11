@@ -10,7 +10,7 @@
 		</layout>
 	</appender>
 	
-	<logger name="meeting">
+	<logger name="com.scsa">
         <level value="trace" />  
         <appender-ref ref="console" />
     </logger> 

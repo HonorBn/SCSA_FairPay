@@ -5,9 +5,8 @@
 <mapper namespace="event">
 	<insert id="insertEvent" parameterType="Event">
 		insert into
-		EventInfo(eventId, eventDate , description, groupId)
-		values(eventid_seq.nextval, #{eventId},
-		#{eventDate}, #{description}, #{groupId})
+		EventInfo(eventId, eventDate , description, meetingId)
+		values(eventid_seq.nextval, TO_DATE(#{eventDate}, 'RR/MM/DD'), #{description}, #{meetingId})
 	</insert>
 	
 	<delete id="deleteEvent" parameterType="string">
@@ -20,7 +19,7 @@
 		set 
 		eventDate=#{eventDate} and
 		description=#{description} and
-		groupId=#{groupId}
+		meetingId=#{meetingId}
 		where eventId=#{eventId} 
 	</update>
 	
@@ -28,13 +27,13 @@
 		select eventId,
 				eventDate,
 				description,
-				groupId
+				meetingId
 		from EventInfo
 	</sql>
 	
 	<select id="selectEventsByMeetingId" resultType="Event" parameterType="string">
 		<include refid="basicEventSql"></include>
-		where groupId = #{meetingId}
+		where meetingId = #{meetingId}
 	</select>
 	
 	<select id="selectEventByEventId" resultType="Event" parameterType="string">

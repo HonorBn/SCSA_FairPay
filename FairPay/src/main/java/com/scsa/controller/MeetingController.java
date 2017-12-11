@@ -96,16 +96,18 @@ public class MeetingController {
 		}
 	}
 	
-	// 모임 검색
+	// 모임 키워드 검색
 	@RequestMapping(value = "/meetings/{keyword}", method = RequestMethod.GET)
 	public List<MeetingInfo> getMeetingListWithKeyword(@PathVariable String keyword, HttpSession session) {
 		String userId = (String) session.getAttribute("userId");
 		return meetingService.searchMeetingListByKeyword(keyword, userId);
 	}
 	
-	// 일정 추가
-	@RequestMapping(value = "/event", method = RequestMethod.POST)
+	// 일정 추가  : done
+	@RequestMapping(value = "/event/post", method = RequestMethod.POST,
+			produces = "text/plain;charset=utf-8")
 	public String addEvent(@RequestBody EventInfo event) {
+		System.out.println("일정추가 요청 발생 event : " + event);
 		boolean result = eventService.createEvent(event);
 		if (result) {
 			return "일정이 등록되었습니다.";

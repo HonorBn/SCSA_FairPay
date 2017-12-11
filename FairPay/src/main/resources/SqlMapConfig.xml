@@ -27,15 +27,13 @@
 		<mapper resource="mapper/Claim.xml"/>
   		<mapper resource="mapper/Claimee.xml"/>
  		<mapper resource="mapper/Meeting.xml"/>
- 		<!-- 
- 		<mapper resource="mapper/Due.xml"/>
  		<mapper resource="mapper/Event.xml"/>
  		<mapper resource="mapper/EventClaim.xml"/>
+ 		<mapper resource="mapper/Due.xml"/>
  		<mapper resource="mapper/Friends.xml"/>
  		<mapper resource="mapper/Photo.xml"/>
  		<mapper resource="mapper/Receipt.xml"/>
  		<mapper resource="mapper/User.xml"/>
- 		 -->
 	</mappers>
 
 </configuration>

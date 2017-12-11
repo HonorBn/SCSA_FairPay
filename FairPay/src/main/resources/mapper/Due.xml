@@ -23,7 +23,7 @@
 	</update>
 	
 	<select id="selectDue" resultType="Due" parameterType="string">
-		<include refid="basicMeetingSql"></include>
+		<include refid="basicDueSql"></include>
 		where dueId = #{dueId}
 	</select>
 	
