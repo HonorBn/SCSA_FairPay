@@ -18,10 +18,13 @@ import com.scsa.model.service.MeetingService;
 import com.scsa.model.service.PhotoService;
 import com.scsa.model.vo.DueInfo;
 import com.scsa.model.vo.EventClaimInfo;
+import com.scsa.model.vo.EventClaimList;
 import com.scsa.model.vo.EventInfo;
+import com.scsa.model.vo.EventList;
 import com.scsa.model.vo.MeetingInfo;
 import com.scsa.model.vo.MeetingList;
 import com.scsa.model.vo.PhotoInfo;
+import com.scsa.model.vo.PhotoList;
 import com.scsa.model.vo.UserIdList;
 
 @RestController
@@ -85,7 +88,7 @@ public class MeetingController {
 		return userIdList;
 	}
 	
-	// 모임 삭제
+	// 모임 삭제  : 보류
 	@RequestMapping(value = "/meeting/delete/{meetingId}", method = RequestMethod.DELETE)
 	public String deleteMeeting(@PathVariable String meetingId) {
 		boolean result = meetingService.removeMeeting(meetingId);
@@ -96,7 +99,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 모임 키워드 검색
+	// 모임 키워드 검색  : 보류
 	@RequestMapping(value = "/meetings/{keyword}", method = RequestMethod.GET)
 	public List<MeetingInfo> getMeetingListWithKeyword(@PathVariable String keyword, HttpSession session) {
 		String userId = (String) session.getAttribute("userId");
@@ -116,7 +119,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 일정 삭제
+	// 일정 삭제  : 보류
 	@RequestMapping(value = "/event/delete/{eventId}", method = RequestMethod.DELETE)
 	public String deleteEvent(@PathVariable String eventId) {
 		boolean result = eventService.deleteEvent(eventId);
@@ -127,7 +130,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 일정 변경
+	// 일정 변경  : 보류
 	@RequestMapping(value = "/event/update", method = RequestMethod.PUT)
 	public String updateEvent(@RequestBody EventInfo event) {
 		boolean result = eventService.updateEvent(event);
@@ -138,21 +141,25 @@ public class MeetingController {
 		}
 	}
 	
-	// 한 모임의 일정 정보 가져오기
-	@RequestMapping(value = "/event/{meetingId}", method = RequestMethod.GET)
-	public List<EventInfo> getEventList(@PathVariable String meetingId) {
-		return eventService.selectEventsByMeetingId(meetingId);
+	// 한 모임의 일정 정보 가져오기  : done
+	@RequestMapping(value = "/event/get/{meetingId}", method = RequestMethod.GET)
+	public EventList getEventList(@PathVariable String meetingId) {
+		System.out.println("모임 일정 정보 요청 발생  meetingId : " + meetingId);
+		EventList eventList = new EventList();
+		eventList.setMeetingList(eventService.selectEventsByMeetingId(meetingId));
+		return eventList;
 	}
 
-	// 일정 아이디로 일정 하나의 정보 가져오기
-	@RequestMapping(value = "/event/{eventId}", method = RequestMethod.GET)
+	// 일정 아이디로 일정 하나의 정보 가져오기  : done
+	@RequestMapping(value = "/event/get/singleEvent/{eventId}", method = RequestMethod.GET)
 	public EventInfo getEventByEventId(@PathVariable String eventId) {
 		return eventService.selectEventByEventId(eventId);
 	}
 	
 	
-	// 회비 생성하기 
-	@RequestMapping(value = "/due", method = RequestMethod.POST)
+	// 회비 생성하기  : done
+	@RequestMapping(value = "/due/post", method = RequestMethod.POST,
+			produces = "text/plain;charset=utf-8")
 	public String addDue(@RequestBody DueInfo due) {
 		boolean result = dueService.createDue(due);
 		if (result) {
@@ -162,7 +169,7 @@ public class MeetingController {
 		}
 	}
 
-	// 회비 삭제
+	// 회비 삭제  : 보류
 	@RequestMapping(value = "/due/delete/{dueId}", method = RequestMethod.DELETE)
 	public String deleteDue(@PathVariable String dueId) {
 		boolean result = dueService.deleteDue(dueId);
@@ -173,7 +180,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 회비 변경
+	// 회비 변경  : 보류
 	@RequestMapping(value = "/due/update", method = RequestMethod.PUT)
 	public String updateDue(@RequestBody DueInfo due) {
 		boolean result = dueService.updateDue(due);
@@ -184,14 +191,15 @@ public class MeetingController {
 		}
 	}
 	
-	// 회비 아이디로 회비 하나의 정보 가져오기
+	// 회비 아이디로 회비 하나의 정보 가져오기  : 보류
 	@RequestMapping(value = "/due/{dueId}", method = RequestMethod.GET)
 	public DueInfo getDue(@PathVariable String dueId) {
 		return dueService.searchDue(dueId);
 	}
 	
-	// 사진 일정에 첨부하기
-	@RequestMapping(value = "/photo", method = RequestMethod.POST)
+	// 사진 일정에 첨부하기  : done
+	@RequestMapping(value = "/photo/post", method = RequestMethod.POST,
+			produces = "text/plain;charset=utf-8")
 	public String addPhoto(@RequestBody PhotoInfo photo) {
 		boolean result = photoService.createPhoto(photo);
 		if (result) {
@@ -201,7 +209,7 @@ public class MeetingController {
 		}
 	}
 
-	// 사진 삭제
+	// 사진 삭제  : 보류
 	@RequestMapping(value = "/photo/delete/{photoId}", method = RequestMethod.DELETE)
 	public String deletePhoto(@PathVariable String photoId) {
 		boolean result = photoService.deletePhoto(photoId);
@@ -212,7 +220,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 사진 변경
+	// 사진 변경  : 보류
 	@RequestMapping(value = "/photo/update", method = RequestMethod.PUT)
 	public String updatePhoto(@RequestBody PhotoInfo photo) {
 		boolean result = photoService.updatePhoto(photo);
@@ -223,15 +231,19 @@ public class MeetingController {
 		}
 	}
 	
-	// 일정 아이디로 사진 가져오기
+	// 일정 아이디로 사진 가져오기  : done
 	@RequestMapping(value = "/photo/list/{eventId}", method = RequestMethod.GET)
-	public List<PhotoInfo> getPhotoList(@PathVariable String eventId) {
-		return photoService.selectPhotoList(eventId);
+	public PhotoList getPhotoList(@PathVariable String eventId) {
+		PhotoList photoList = new PhotoList();
+		photoList.setPhotoList(photoService.selectPhotoList(eventId));
+		return photoList;
 	}
 	
-	// 일정 결제 추가
-	@RequestMapping(value = "/eventClaim", method = RequestMethod.POST)
+	// 일정 결제 추가  : done
+	@RequestMapping(value = "/eventClaim/post", method = RequestMethod.POST,
+			produces = "text/plain;charset=utf-8")
 	public String addEventClaim(@RequestBody EventClaimInfo eventClaim) {
+		System.out.println("일정 결제 추가 요청 발생 : "+eventClaim.toString());
 		boolean result = eventClaimService.createEventClaim(eventClaim);
 		if (result) {
 			return "일정결제가 등록되었습니다.";
@@ -240,7 +252,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 일정 결제 삭제
+	// 일정 결제 삭제  : 보류
 	@RequestMapping(value = "/eventClaim/delete/{eventClaimId}", method = RequestMethod.DELETE)
 	public String deleteEventClaim(@PathVariable String eventClaimId) {
 		boolean result = eventClaimService.deleteEventClaim(eventClaimId);
@@ -251,7 +263,7 @@ public class MeetingController {
 		}
 	}
 	
-	// 일정 결제 변경
+	// 일정 결제 변경  : 보류
 	@RequestMapping(value = "/eventClaim/update", method = RequestMethod.PUT)
 	public String updateEventClaim(@RequestBody EventClaimInfo eventClaim) {
 		boolean result = eventClaimService.updateEventClaim(eventClaim);
@@ -262,14 +274,16 @@ public class MeetingController {
 		}
 	}
 	
-	// 일정 아이디로 일정 결제 정보 리스트 가져오기
+	// 일정 아이디로 일정 결제 정보 리스트 가져오기  : done
 	@RequestMapping(value = "/eventClaim/list/{eventId}", method = RequestMethod.GET)
-	public List<EventClaimInfo> getEventClaimList(@PathVariable String eventId) {
-		return eventClaimService.searchEventClaimsByEventId(eventId);
+	public EventClaimList getEventClaimListByEventId(@PathVariable String eventId) {
+		EventClaimList eventClaimList = new EventClaimList();
+		eventClaimList.setEventClaimList(eventClaimService.searchEventClaimsByEventId(eventId));
+		return eventClaimList;
 	}
 
 	// 일정 결제 아이디로 일정 결제 정보 가져오기
-	@RequestMapping(value = "/eventClaim/{eventClaimId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/eventClaim/get/{eventClaimId}", method = RequestMethod.GET)
 	public EventClaimInfo getEventClaimByEventClaimId(@PathVariable String eventClaimId) {
 		return eventClaimService.getEventClaim(eventClaimId);
 	}

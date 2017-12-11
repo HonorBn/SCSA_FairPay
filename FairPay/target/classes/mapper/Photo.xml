@@ -8,9 +8,9 @@
 	<insert id="insertPhoto" parameterType="Photo">
 		insert into
 		photoInfo
-		(photoId_seq.nextval,photoImg,eventId, title)
+		(photoid,photoImg,eventId, title)
 		values
-		(#{photoId},#{photoImg},#{eventId},#{title})
+		(photoId_seq.nextval,#{photoImg},#{eventId},#{title})
 	</insert>
 
 	<delete id="deletePhoto" parameterType="String">
@@ -32,20 +32,19 @@
 		photoId = #{photoId}
 	</update>
 
-	<select id="selectPhotoById" resultMap="PhotoResultMap"
-		parameterType="String">
+	<select id="selectPhotoListByEventId" resultType="Photo" parameterType="String">
 		select *
 		from photoInfo
 		where eventId = #{eventId}
 	</select>
 
 
-	<!-- column 은 select 절에서 column 명 property 는 vo에 맵핑된 이름 -->
+	<!-- column 은 select 절에서 column 명 property 는 vo에 맵핑된 이름
 	<resultMap type="Photo" id="PhotoResultMap">
 		<id column="photoId" property="photoId" />
 		<result column="photoImg" property="photoImg" />
 		<result column="eventId" property="eventId" />
 		<result column="title" property="title" />
-	</resultMap>
+	</resultMap> -->
 
 </mapper>

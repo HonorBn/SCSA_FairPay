@@ -19,6 +19,16 @@ public class EventClaimInfo {
 		super();
 	}
 
+	public EventClaimInfo(String eventClaimId, String eventClaimName, String eventClaimAmount, String claimerId,
+			String eventId) {
+		super();
+		this.eventClaimId = eventClaimId;
+		this.eventClaimName = eventClaimName;
+		this.eventClaimAmount = eventClaimAmount;
+		this.claimerId = claimerId;
+		this.eventId = eventId;
+	}
+
 	public EventClaimInfo(String eventClaimName, String eventClaimAmount, String claimerId, String eventId) {
 		super();
 		this.eventClaimName = eventClaimName;

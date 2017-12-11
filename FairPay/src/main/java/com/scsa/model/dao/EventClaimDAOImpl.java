@@ -43,12 +43,12 @@ public class EventClaimDAOImpl implements EventClaimDAO {
 
 	@Override
 	public EventClaimInfo selectEventClaim(String eventClaimId) {
-		return sqlSession.selectOne("event.selectEventClaim", eventClaimId);
+		return sqlSession.selectOne("eventClaim.selectEventClaim", eventClaimId);
 	}
 
 	@Override
 	public List<EventClaimInfo> selectEventClaimsByEventId(String eventId) {
-		return sqlSession.selectList("event.selectEventClaimsByEventId", eventId);
+		return sqlSession.selectList("eventClaim.selectEventClaimsByEventId", eventId);
 	}
 
 }
