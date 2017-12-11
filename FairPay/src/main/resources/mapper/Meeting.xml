@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="meeting">
+	<select id="selectMeetingIdBeforeInsertion" resultType="int">
+		select meetingid_seq.nextval from dual
+	</select>
+	
+	<insert id="insertMeeting" parameterType="Meeting">
+		insert into
+		meetinginfo(meetingId, managerId , memberCount, groupname, meetingimage)
+		values(#{meetingId}, #{managerId},
+		#{memberCount}, #{groupName}, #{meetingImage})
+	</insert>
+	
+	<insert id="insertGroupMember" parameterType="map">
+		insert into
+		groupinfo(groupid, userid)
+		values(#{groupId}, #{userId})
+	</insert>
+	
+	<select id="selectGroupMemebers" parameterType="string" resultType="string">
+		select userid
+		from groupinfo
+		where groupid = #{groupId}
+	</select>
+	
+	<update id="updateMeetingMemberCount" parameterType="map">
+		update meetinginfo
+		set memberCount=memberCount+#{memberCount}
+		where meetingId=#{groupDd} 
+	</update>
+	
+	<select id="selectMeeting" resultType="integer" parameterType="string">
+		<include refid="basicMeetingSql"></include>
+		where meetingId = #{meetingId}
+	</select>
+	
+	<delete id="preDeleteMeeting" parameterType="string">
+		delete from groupinfo where
+		groupid=#{meetingId}
+	</delete>
+	
+	<delete id="deleteMeeting" parameterType="string">
+		delete from meetinginfo where
+		meetingId=#{meetingId}
+	</delete>
+	
+	<sql id="basicMeetingSql">
+		select meetingId,
+				managerId,
+				memberCount,
+				groupName,
+				meetingImage
+		from MeetingInfo
+	</sql>
+	<select id="selectMeetingList" resultType="Meeting" parameterType="string">
+		select m.meetingId,
+				m.managerId,
+				m.memberCount,
+				m.groupName,
+				m.meetingImage
+		from MeetingInfo m, GroupInfo g
+		where g.userid = #{userId} and m.meetingId = g.groupid
+	</select>
+	
+	<select id="selectMeetingListByKeyword" resultType="Meeting" parameterType="map">
+		select m.meetingId,
+				m.managerId,
+				m.memberCount,
+				m.groupName,
+				m.meetingImage
+		from MeetingInfo m, GroupInfo g
+		where g.userid = #{userId} and g.groupid = m.groupid
+		and groupName like ('%||#{keyword}||%')
+	</select>
+
+
+
+</mapper>

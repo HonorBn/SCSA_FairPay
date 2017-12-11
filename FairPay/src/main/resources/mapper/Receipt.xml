@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="receipt">
+
+	<insert id="insertReceipt" parameterType="Receipt">
+		insert into
+		receiptInfo
+		(receiptId_seq.nextval,receiptImg,claimId)
+		values
+		(#{receiptId},#{receiptImg},#{claimId})
+	</insert>
+
+	<delete id="deleteReceipt" parameterType="String">
+		delete from
+		receiptInfo
+		where
+		receiptId = #{receiptId}
+	</delete>
+
+	<sql id="basicReceiptSql">
+		select
+		receiptId,
+		receiptImg,
+		claimId
+		from receiptInfo
+	</sql>
+
+	<select id="selectReceiptById" resultMap="ReceiptResultMap"
+		parameterType="String">
+		<include refid="basicReceiptSql"></include>
+		where receiptId = #{receiptId}
+	</select>
+
+	<select id="selectReceiptList" resultMap="ReceiptResultMap"
+		parameterType="String">
+		<include refid="basicReceiptSql"></include>
+		where claimId = #{claimId}
+	</select>
+
+
+	<!-- column 은 select 절에서 column 명 property 는 vo에 맵핑된 이름 -->
+	<resultMap type="Receipt" id="ReceiptResultMap">
+		<id column="receiptId" property="receiptId" />
+		<result column="receiptImg" property="receiptImg" />
+		<result column="claimId" property="claimId" />
+	</resultMap>
+
+</mapper>

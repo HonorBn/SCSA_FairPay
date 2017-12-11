@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="photo">
+
+	<insert id="insertPhoto" parameterType="Photo">
+		insert into
+		photoInfo
+		(photoId_seq.nextval,photoImg,eventId, title)
+		values
+		(#{photoId},#{photoImg},#{eventId},#{title})
+	</insert>
+
+	<delete id="deletePhoto" parameterType="String">
+		delete from
+		PhotoInfo
+		where
+		photoId = #{photoId}
+	</delete>
+
+	<update id="updatePhoto" parameterType="Photo">
+		update photoInfo
+		set
+		photoImg = #{photoImg}
+		and
+		title = #{title}
+		and
+		eventId = #{eventId}
+		where
+		photoId = #{photoId}
+	</update>
+
+	<select id="selectPhotoById" resultMap="PhotoResultMap"
+		parameterType="String">
+		select *
+		from photoInfo
+		where eventId = #{eventId}
+	</select>
+
+
+	<!-- column 은 select 절에서 column 명 property 는 vo에 맵핑된 이름 -->
+	<resultMap type="Photo" id="PhotoResultMap">
+		<id column="photoId" property="photoId" />
+		<result column="photoImg" property="photoImg" />
+		<result column="eventId" property="eventId" />
+		<result column="title" property="title" />
+	</resultMap>
+
+</mapper>

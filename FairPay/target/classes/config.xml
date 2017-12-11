@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="accountDao" class="com.scsa.model.dao.AccountDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="accountService"
+		class="com.scsa.model.service.AccountServiceImpl"
+		p:accountDao-ref="accountDao"/>
+		
+	<bean id="claimDao" class="com.scsa.model.dao.ClaimDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="claimService"
+		class="com.scsa.model.service.ClaimServiceImpl"
+		p:claimDao-ref="claimDao"/>
+		
+	<bean id="claimeeDao" class="com.scsa.model.dao.ClaimeeDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="claimeeService"
+		class="com.scsa.model.service.ClaimeeServiceImpl"
+		p:claimeeDao-ref="claimeeDao"/>
+		
+	<bean id="dueDao" class="com.scsa.model.dao.DueDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="dueService"
+		class="com.scsa.model.service.DueServiceImpl"
+		p:dueDao-ref="dueDao"/>
+	
+	<bean id="eventClaimDao" class="com.scsa.model.dao.EventClaimDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="eventClaimService"
+		class="com.scsa.model.service.EventClaimServiceImpl"
+		p:eventClaimDao-ref="eventClaimDao"/>
+		
+	<bean id="eventDao" class="com.scsa.model.dao.EventDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="eventService"
+		class="com.scsa.model.service.EventServiceImpl"
+		p:eventDao-ref="eventDao"/>
+		
+	<bean id="friendsDao" class="com.scsa.model.dao.FriendsDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="friendsService"
+		class="com.scsa.model.service.FriendsServiceImpl"
+		p:friendsDao-ref="friendsDao"/>
+		
+	<bean id="meetingDao" class="com.scsa.model.dao.MeetingDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="meetingService"
+		class="com.scsa.model.service.MeetingServiceImpl"
+		p:meetingDao-ref="meetingDao"/>
+		
+	<bean id="photoDao" class="com.scsa.model.dao.PhotoDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="photoService"
+		class="com.scsa.model.service.PhotoServiceImpl"
+		p:photoDao-ref="photoDao"/>
+		
+	<bean id="receiptDao" class="com.scsa.model.dao.ReceiptDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="receiptService"
+		class="com.scsa.model.service.ReceiptServiceImpl"
+		p:receiptDao-ref="receiptDao"/>
+		
+	<bean id="userDao" class="com.scsa.model.dao.UserDAOImpl"
+		p:sqlSession-ref="sqlSession"/>
+	<bean id="userService"
+		class="com.scsa.model.service.UserServiceImpl"
+		p:userDao-ref="userDao"/>
+	
+	<bean id="bankAPIService"
+		class="com.scsa.model.service.BankAPIService"/>
+	
+</beans>

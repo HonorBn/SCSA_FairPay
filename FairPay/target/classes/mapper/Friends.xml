@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="friends">
+	<insert id="insertFriend" parameterType="Friends">
+		insert into
+		friendsInfo
+		(userId,friendId,isFavorite)
+		values
+		(#{userId},#{friendId},#{isFavorite})
+	</insert>
+
+	<delete id="deleteFriend" parameterType="Friends">
+		delete from
+		friendsInfo
+		where
+		userId = #{userId}
+		and
+		friendId = #{friendId}
+	</delete>
+
+	<sql id="basicFriendsSql">
+		select
+		userId,
+		friendId,
+		isFavorite
+		from friendsInfo
+	</sql>
+
+	<select id="selectFriendsListById" resultMap="FriendsResultMap"
+		parameterType="String">
+		<include refid="basicFriendsSql"></include>
+		where userId = #{userId}
+	</select>
+
+	<select id="selectFriendsListByName" resultMap="FriendsResultMap"
+		parameterType="String">
+		select f.friendId
+		from friendsInfo f, userInfo u
+		where f.userId = u.userId
+		and u.username =
+		#{username}
+	</select>
+
+	<select id="selectFavoriteFriendsById" resultMap="FriendsResultMap"
+		parameterType="String">
+		select friendId
+		from friendsInfo 
+		where userId = #{userId}
+		and isFavorite = '1'
+	</select>
+	
+	<select id="selectFavoriteFriendsListByName" resultMap="FriendsResultMap"
+		parameterType="String">
+		select f.friendId
+		from friendsInfo f, userInfo u
+		where f.userId = u.userId
+		and u.username = #{username}
+		and f.isFavorite = '1'
+	</select>
+	
+	<update id="insertFavoriteFriend" parameterType="Friends">
+		update friendsInfo
+		set
+		isFavorite = '1'
+		where
+		userId=#{userId} 
+		and 
+		friendId = #{friendId}
+	</update>
+	
+	<update id="deleteFavoriteFriend" parameterType="Friends">
+		update friendsInfo
+		set
+		isFavorite = '0'
+		where
+		userId=#{userId} 
+		and 
+		friendId = #{friendId}
+	</update>
+
+	<!-- column 은 select 절에서 column 명 property 는 vo에 맵핑된 이름 -->
+	<resultMap type="Friends" id="FriendsResultMap">
+		<id column="userId" property="userId" />
+		<result column="friendId" property="friendId" />
+		<result column="isFavorite" property="isFavorite" />
+	</resultMap>
+</mapper>

@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="claim">
+	
+	<insert id="insertClaim" parameterType="Claim">
+		insert into
+		claiminfo(claimId, claimDate, totalPrice, claimerId, claimer_accountNumber, meetingId)
+		values(#{claimId}, #{claimDate}, #{totalPrice}, #{claimerId}, #{claimer_accountNumber}, #{meetingId})
+		<selectKey order="BEFORE" keyProperty="claimId" resultType="string">
+			select claimId_seq.nextval from dual
+		</selectKey>
+	</insert>
+	
+	<!-- 
+	<update id="updateClaim" parameterType="Claim">
+		update claiminfo
+		set
+				claimDate				= #{claimDate},
+				totalPrice				= #{totalPrice},
+				claimerId				= #{claimerId},
+				claimer_accountNumber	= #{claimer_accountNumber},
+				meetingId				= #{meetingId}
+		where	claimId					= #{claimId}
+	</update>
+		
+	<delete id="deleteClaim" parameterType="String">
+		delete from claiminfo
+		where claimId = #{claimId}
+	</delete>
+	 -->
+	
+	<resultMap type="Claim" id="ClaimClaimee">
+		<id column="claimId" property="claimId" />
+		<result column="claimDate" property="claimDate" />
+		<result column="totalPrice" property="totalPrice" />
+		<result column="claimerId" property="claimerId" />
+		<result column="claimer_accountNumber" property="claimer_accountNumber" />
+		
+		<collection property="claimeeList" ofType="Claimee">
+			<id column="paymentId" property="paymentId" />
+			<result column="paymentDate" property="paymentDate" />
+			<result column="isPaid" property="isPaid" />
+			<result column="tran_amt" property="tran_amt" />
+			<result column="claimId" property="claimId" />
+			<result column="claimeeId" property="claimeeId" />
+			<result column="claimee_accountNumber" property="claimee_accountNumber" />
+		</collection>
+		
+	</resultMap>
+	
+	<resultMap type="Claim" id="ClaimReceipt">
+		<id column="claimId" property="claimId" />
+		
+		<collection property="receiptList" ofType="Receipt">
+			<id column="receiptId" property="receiptId" />
+			<result column="receiptImg" property="paymentDate" />
+			<result column="claimId" property="claimId" />
+		</collection>
+		
+	</resultMap>
+	
+	<select id="selectClaimWithClaimeeList" parameterType="String" resultMap="ClaimClaimee">
+		select	c.claimId,
+				c.claimDate,
+				c.totalPrice,
+				c.claimerId,
+				c.claimer_accountNumber,
+				e.paymentId,
+				e.paymentDate,
+				e.isPaid,
+				e.tran_amt,
+				e.claimId,
+				e.claimeeId,
+				e.claimee_accountNumber
+		from ClaimInfo c, ClaimeeInfo e
+		where c.claimId = e.claimId(+)
+		and c.claimId= #{claimId}
+	</select>
+	
+	<select id="selectClaimWithReceiptList" parameterType="String" resultMap="ClaimReceipt">
+		select	c.claimId,
+				c.claimerId,
+				r.receiptId,
+				r.receiptImg,
+				r.claimId
+		from ClaimInfo c, ReceiptInfo r
+		where c.claimId = r.claimId(+)
+		and c.claimId= #{claimId}
+	</select>
+	
+	<select id="selectClaimListByClaimerIdWithClaimeeList" parameterType="String" resultMap="ClaimClaimee">
+		select	c.claimId,
+				c.claimDate,
+				c.totalPrice,
+				c.claimerId,
+				c.claimer_accountNumber,
+				e.paymentId,
+				e.paymentDate,
+				e.isPaid,
+				e.tran_amt,
+				e.claimId,
+				e.claimeeId,
+				e.claimee_accountNumber
+		from ClaimInfo c, ClaimeeInfo e
+		where c.claimId = e.claimId(+)
+		and c.claimerId= #{userId}
+	</select>
+	
+	<select id="selectClaimListByClaimerIdWithReceiptList" parameterType="String" resultMap="ClaimReceipt">
+		select	c.claimId,
+				c.claimerId,
+				r.receiptId,
+				r.receiptImg,
+				r.claimId
+		from ClaimInfo c, ReceiptInfo r
+		where c.claimId = r.claimId(+)
+		and c.claimerId= #{userId}
+	</select>
+	
+	<select id="selectClaimListByClaimeeIdWithClaimeeList" parameterType="String" resultMap="ClaimClaimee">
+		select	c.claimId,
+				c.claimDate,
+				c.totalPrice,
+				c.claimerId,
+				c.claimer_accountNumber,
+				e.paymentId,
+				e.paymentDate,
+				e.isPaid,
+				e.tran_amt,
+				e.claimId,
+				e.claimeeId,
+				e.claimee_accountNumber
+		from ClaimeeInfo e, (select * from ClaimInfo
+							 where claimId in (	select claimId
+												from claimeeInfo
+												where claimeeId = #{userId} )) c
+		where c.claimId = e.claimId(+)
+	</select>
+	
+	<select id="selectClaimListByClaimeeIdWithReceiptList" parameterType="String" resultMap="ClaimReceipt">
+		select	c.claimId,
+				c.claimerId,
+				r.receiptId,
+				r.receiptImg,
+				r.claimId
+		from ReceiptInfo r, (select * from ClaimInfo
+							 where claimId in (	select claimId
+												from claimeeInfo
+												where claimeeId = #{userId} )) c
+		where c.claimId = r.claimId(+)
+	</select>
+	
+	<select id="selectClaimListByOurIdWithClaimeeList" parameterType="map" resultMap="ClaimClaimee">
+		select	c.claimId,
+				c.claimDate,
+				c.totalPrice,
+				c.claimerId,
+				c.claimer_accountNumber,
+				e.paymentId,
+				e.paymentDate,
+				e.isPaid,
+				e.tran_amt,
+				e.claimId,
+				e.claimeeId,
+				e.claimee_accountNumber
+		from ClaimInfo c, ClaimeeInfo e
+		where c.claimId = e.claimId(+)
+		and (
+				(c.claimerId, e.claimeeId) = (#{myId}, #{yourId})
+				or
+				(c.claimerId, e.claimeeId) = (#{yourId}, #{myId})
+			)
+	</select>
+	
+	
+	<select id="selectClaimListByOurIdWithReceiptList" parameterType="map" resultMap="ClaimReceipt">
+		select	c.claimId,
+				c.claimerId,
+				r.receiptId,
+				r.receiptImg,
+				r.claimId
+		from ClaimInfo c, ClaimeeInfo e, ReceiptInfo r
+		where c.claimId = e.claimId
+		and c.claimId = r.claimId
+		and (
+				(c.claimerId, e.claimeeId) = (#{myId}, #{yourId})
+				or
+				(c.claimerId, e.claimeeId) = (#{yourId}, #{myId})
+			)
+	</select>
+	
+	<select id="selectClaimListWithinMeetingWithClaimeeList" parameterType="String" resultMap="ClaimClaimee">
+		select	c.claimId,
+				c.claimDate,
+				c.totalPrice,
+				c.claimerId,
+				c.claimer_accountNumber,
+				e.paymentId,
+				e.paymentDate,
+				e.isPaid,
+				e.tran_amt,
+				e.claimId,
+				e.claimeeId,
+				e.claimee_accountNumber
+		from ClaimInfo c, ClaimeeInfo e
+		where c.claimId = e.claimId(+)
+		and c.meetingId= #{meetingId}
+	</select>
+	
+	<select id="selectClaimListWithinMeetingWithReceiptList" parameterType="String" resultMap="ClaimReceipt">
+		select	c.claimId,
+				c.claimerId,
+				r.receiptId,
+				r.receiptImg,
+				r.claimId
+		from ClaimInfo c, ReceiptInfo r
+		where c.claimId = r.claimId(+)
+		and c.meetingId = #{meetingId}
+	</select>
+	
+</mapper>

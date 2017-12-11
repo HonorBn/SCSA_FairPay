@@ -1,0 +1,62 @@
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="user">
+
+	<select id="login" parameterType="User" resultType="User">
+		select * from
+		userInfo where userId=#{userId} and password=#{password}
+	</select>
+
+	<insert id="insertUser" parameterType="User">
+		insert into
+		userInfo(userId,password,username,nickname,userSegNo,authorizationCode,accessToken)
+		values(#{userId},#{password},#{username},#{nickname},#{userSegNo},#{authorizationCode},#{accessToken})
+	</insert>
+
+	<sql id="basicUserSql">
+		select userId,password,username,nickname,userSegNo,authorizationCode,accessToken from
+		userInfo
+	</sql>
+
+
+	<update id="updateUser" parameterType="User"> 
+		update userInfo set password=#{password},authorizationCode=#{authorizationCode} ,accessToken=#{accessToken}
+		where userId=#{userId} 
+	</update> 
+
+	<delete id="deleteUser" parameterType="String">
+		delete from userInfo
+		where userId=#{userId}
+
+	</delete>
+
+	<select id="selectUserById" parameterType="String" resultType="User">
+		<include refid="basicUserSql" />
+		where userId=#{userId}
+	</select>
+	
+	<select id="selectUserByUserSeqNo" parameterType="String" resultType="User">
+		<include refid="basicUserSql" />
+		where userSegNo=#{userSegNo}
+	</select>
+
+	
+	
+	<resultMap type="User" id="UserResultMap">
+		<id column="userId" property="userId" />
+		<result column="password" property="password" />
+		<result column="username" property="username" />
+		<result column="nickname" property="nickname" />
+		<result column="userSegNo" property="userSegNo" />
+		<result column="authorizationCode" property="authorizationCode" />
+		<result column="accessToken" property="accessToken" />
+	</resultMap>
+
+
+	
+
+
+
+</mapper>

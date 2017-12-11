@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="event">
+	<insert id="insertEventClaim" parameterType="EventClaim">
+		insert into
+		EventClaimInfo(eventClaimId, eventClaimName , eventClaimAmount, claimerId, eventId)
+		values(eventClaimId_seq.nextval, #{eventClaimName},
+		#{eventClaimAmount}, #{claimerId}, #{eventId})
+	</insert>
+	
+	<delete id="deleteEventClaim" parameterType="string">
+		delete from EventClaimInfo where
+		eventClaimId=#{eventClaimId}
+	</delete>
+	
+	<update id="updateEventClaim" parameterType="EventClaim">
+		update EventClaimInfo
+		set 
+		eventClaimName=#{eventClaimName} and
+		eventClaimAmount=#{eventClaimAmount} and
+		claimerId=#{claimerId} and
+		eventId = #{eventId}
+		where eventClaimId=#{eventClaimId} 
+	</update>
+	
+	<sql id="basicEventClaimSql">
+		select eventClaimId,
+				eventClaimName,
+				eventClaimAmount,
+				claimerId,
+				eventId
+		from EventClaimInfo
+	</sql>
+	
+	<select id="selectEventClaim" resultType="EventClaim" parameterType="string">
+		<include refid="basicEventClaimSql"></include>
+		where eventClaimId = #{eventClaimId}
+	</select>
+	
+	<select id="selectEventClaimsByEventId" resultType="EventClaim" parameterType="string">
+		<include refid="basicEventClaimSql"></include>
+		where eventId = #{eventId}
+	</select>
+	
+</mapper>

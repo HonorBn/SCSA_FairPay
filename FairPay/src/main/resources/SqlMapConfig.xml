@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration
+  PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+
+	<settings>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+	</settings>
+	
+	<typeAliases>
+		<typeAlias alias="Account" type="com.scsa.model.vo.AccountInfo" />
+		<typeAlias alias="Claim" type="com.scsa.model.vo.ClaimInfo" />
+		<typeAlias alias="Claimee" type="com.scsa.model.vo.ClaimeeInfo" />
+		<typeAlias alias="Due" type="com.scsa.model.vo.DueInfo" />
+		<typeAlias alias="Event" type="com.scsa.model.vo.EventInfo" />
+		<typeAlias alias="EventClaim" type="com.scsa.model.vo.EventClaimInfo" />
+		<typeAlias alias="Friends" type="com.scsa.model.vo.FriendsInfo" />
+		<typeAlias alias="Meeting" type="com.scsa.model.vo.MeetingInfo" />
+		<typeAlias alias="Photo" type="com.scsa.model.vo.PhotoInfo" />
+		<typeAlias alias="Receipt" type="com.scsa.model.vo.ReceiptInfo" />
+		<typeAlias alias="User"  type="com.scsa.model.vo.UserInfo" />
+	</typeAliases>
+	<mappers>
+  		<mapper resource="mapper/Account.xml"/>
+		<mapper resource="mapper/Claim.xml"/>
+  		<mapper resource="mapper/Claimee.xml"/>
+ 		<mapper resource="mapper/Meeting.xml"/>
+ 		<!-- 
+ 		<mapper resource="mapper/Due.xml"/>
+ 		<mapper resource="mapper/Event.xml"/>
+ 		<mapper resource="mapper/EventClaim.xml"/>
+ 		<mapper resource="mapper/Friends.xml"/>
+ 		<mapper resource="mapper/Photo.xml"/>
+ 		<mapper resource="mapper/Receipt.xml"/>
+ 		<mapper resource="mapper/User.xml"/>
+ 		 -->
+	</mappers>
+
+</configuration>

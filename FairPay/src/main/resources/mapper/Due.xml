@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="due">
+	<insert id="insertDue" parameterType="Due">
+		insert into
+		DueInfo(dueId, dueAmount , groupId)
+		values(dueid_seq.nextval, #{dueId},
+		#{dueAmount}, #{groupId})
+	</insert>
+	
+	<delete id="deleteDue" parameterType="string">
+		delete from DueInfo where
+		dueId=#{dueId}
+	</delete>
+	
+	<update id="updateDue" parameterType="Due">
+		update meetinginfo
+		set memberCount=memberCount+#{memberCount}
+		where meetingId=#{groupDd} 
+	</update>
+	
+	<select id="selectDue" resultType="Due" parameterType="string">
+		<include refid="basicMeetingSql"></include>
+		where dueId = #{dueId}
+	</select>
+	
+	<sql id="basicDueSql">
+		select dueId,
+				dueAmount,
+				groupId
+		from DueInfo
+	</sql>
+
+</mapper>

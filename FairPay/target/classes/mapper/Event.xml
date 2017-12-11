@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="event">
+	<insert id="insertEvent" parameterType="Event">
+		insert into
+		EventInfo(eventId, eventDate , description, groupId)
+		values(eventid_seq.nextval, #{eventId},
+		#{eventDate}, #{description}, #{groupId})
+	</insert>
+	
+	<delete id="deleteEvent" parameterType="string">
+		delete from EventInfo where
+		eventId=#{eventId}
+	</delete>
+	
+	<update id="updateEvent" parameterType="Event">
+		update EventInfo
+		set 
+		eventDate=#{eventDate} and
+		description=#{description} and
+		groupId=#{groupId}
+		where eventId=#{eventId} 
+	</update>
+	
+	<sql id="basicEventSql">
+		select eventId,
+				eventDate,
+				description,
+				groupId
+		from EventInfo
+	</sql>
+	
+	<select id="selectEventsByMeetingId" resultType="Event" parameterType="string">
+		<include refid="basicEventSql"></include>
+		where groupId = #{meetingId}
+	</select>
+	
+	<select id="selectEventByEventId" resultType="Event" parameterType="string">
+		<include refid="basicEventSql"></include>
+		where eventId = #{eventId}
+	</select>
+	
+</mapper>
