@@ -168,10 +168,10 @@
 				e.claimee_accountNumber
 		from ClaimInfo c, ClaimeeInfo e
 		where c.claimId = e.claimId(+)
-		and (
-				(c.claimerId, e.claimeeId) = (#{myId}, #{yourId})
-				or
-				(c.claimerId, e.claimeeId) = (#{yourId}, #{myId})
+		AND (
+				((c.claimerId, e.claimeeId) in (select #{myId}, #{yourId} from dual))
+				OR
+				((c.claimerId, e.claimeeId) in (select #{yourId}, #{myId} from dual))
 			)
 	</select>
 	

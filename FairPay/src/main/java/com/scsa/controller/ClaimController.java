@@ -1,17 +1,23 @@
 package com.scsa.controller;
 
 import java.sql.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+
 import com.scsa.data.Claim;
+import com.scsa.data.Ours;
 import com.scsa.data.Pay;
+import com.scsa.model.service.BankAPIService;
 import com.scsa.model.service.ClaimService;
 import com.scsa.model.service.ClaimeeService;
 import com.scsa.model.service.ReceiptService;
-import com.scsa.model.service.BankAPIService;
 import com.scsa.model.vo.ClaimInfo;
 import com.scsa.model.vo.ClaimeeInfo;
 import com.scsa.model.vo.ReceiptInfo;
@@ -87,6 +93,16 @@ public class ClaimController {
 
 		claimeeService.updateClaimee(claimee);
 		
+	}
+	
+	@RequestMapping(value = "/ours", method = RequestMethod.POST)
+	public List<ClaimInfo> selectOurClaimList(@RequestBody Ours ours) {
+		
+		HashMap<String, String> ourId = new HashMap<String, String>();
+		ourId.put("myId", ours.getMyId());
+		ourId.put("yourId", ours.getYourId());
+		System.out.println(ours.getMyId());
+		return claimService.getClaimListByOurIdWithClaimeeList(ourId);		
 	}
 	
 }

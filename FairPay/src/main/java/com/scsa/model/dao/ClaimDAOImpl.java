@@ -61,7 +61,12 @@ public class ClaimDAOImpl implements ClaimDAO {
 	public List<ClaimInfo> selectClaimListByClaimeeIdWithReceiptList(String userId) {
 		return sqlSession.selectList("claim.selectClaimListByClaimeeIdWithReceiptList", userId);
 	}
-
+	
+	@Override
+	public List<ClaimInfo> selectClaimListByOurIdWithClaimeeList(HashMap<String, String> ourId) {
+		return sqlSession.selectList("claim.selectClaimListByOurIdWithClaimeeList", ourId);
+	}
+	
 	@Override
 	public List<ClaimInfo> selectClaimListByOurIdWithReceiptList(HashMap<String, String> ourId) {
 		return sqlSession.selectList("claim.selectClaimListByOurIdWithReceiptList", ourId);
