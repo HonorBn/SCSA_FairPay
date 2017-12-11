@@ -58,6 +58,11 @@ public class ClaimServiceImpl implements ClaimService {
 	public List<ClaimInfo> getClaimListByClaimeeIdWithReceiptList(String userId) {
 		return claimDao.selectClaimListByClaimeeIdWithReceiptList(userId);
 	}
+	
+	@Override
+	public List<ClaimInfo> getClaimListByOurIdWithClaimeeList(HashMap<String, String> ourId) {
+		return claimDao.selectClaimListByOurIdWithClaimeeList(ourId);
+	}
 
 	@Override
 	public List<ClaimInfo> getClaimListByOurIdWithReceiptList(HashMap<String, String> ourId) {

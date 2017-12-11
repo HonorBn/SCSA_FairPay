@@ -22,6 +22,7 @@ public interface ClaimService {
 	List<ClaimInfo> getClaimListByClaimeeIdWithReceiptList(String userId);
 	
 	// 특정 대상과의 청구 관계 내역 조회 										// 카톡처럼 내 메시지, 상대 메시지 형태로 뿌리기 위해
+	List<ClaimInfo> getClaimListByOurIdWithClaimeeList(HashMap<String, String> ourId);
 	List<ClaimInfo> getClaimListByOurIdWithReceiptList(HashMap<String, String> ourId);
 	
 	// 모임 내 회비 모금 내역 조회
