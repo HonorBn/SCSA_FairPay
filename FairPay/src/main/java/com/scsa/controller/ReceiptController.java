@@ -5,7 +5,9 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scsa.model.service.ReceiptService;
@@ -29,16 +31,16 @@ public class ReceiptController {
 		return "receipt_list";
 	}
 
-	// 영수증 등록
-	@RequestMapping(value = "/add_receipt.do")
-	public String add_receipt(Model model, ReceiptInfo receipt) {
+	// 영수증 등록  : done
+	@RequestMapping(value = "/receipt/post", method = RequestMethod.POST,
+			produces = "text/plain;charset=utf-8")
+	public String addReceipt(@RequestBody ReceiptInfo receipt) {
 		boolean result = receiptService.createReceipt(receipt);
 		if (result) {
-			model.addAttribute("msg", "영수증 등록에 성공하였습니다");
+			return "영수증 등록에 성공했습니다.";
 		} else {
-			model.addAttribute("msg", "영수증 등록에 실패하였습니다");
+			return "영수증 등록에 실패했습니다.";
 		}
-		return "receipt_list";
 	}
 
 	// 영수증 삭제

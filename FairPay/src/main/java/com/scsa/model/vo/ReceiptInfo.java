@@ -5,13 +5,20 @@ public class ReceiptInfo {
 	private String receiptImg;
 	private String claimId;
 	
-	public ReceiptInfo(String receiptId, String receiptImg) {
-		this.receiptId = receiptId;
+	public ReceiptInfo() {
+		super();
+	}
+
+	public ReceiptInfo(String receiptImg, String claimId) {
+		super();
 		this.receiptImg = receiptImg;
+		this.claimId = claimId;
 	}
 
 	public ReceiptInfo(String receiptId, String receiptImg, String claimId) {
-		this(receiptId, receiptImg);
+		super();
+		this.receiptId = receiptId;
+		this.receiptImg = receiptImg;
 		this.claimId = claimId;
 	}
 
