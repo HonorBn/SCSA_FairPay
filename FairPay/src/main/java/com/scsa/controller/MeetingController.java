@@ -282,7 +282,7 @@ public class MeetingController {
 		return eventClaimList;
 	}
 
-	// 일정 결제 아이디로 일정 결제 정보 가져오기
+	// 일정 결제 아이디로 일정 결제 정보 가져오기  : done
 	@RequestMapping(value = "/eventClaim/get/{eventClaimId}", method = RequestMethod.GET)
 	public EventClaimInfo getEventClaimByEventClaimId(@PathVariable String eventClaimId) {
 		return eventClaimService.getEventClaim(eventClaimId);

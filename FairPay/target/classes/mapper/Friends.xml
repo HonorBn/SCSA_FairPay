@@ -9,7 +9,7 @@
 		friendsInfo
 		(userId,friendId,isFavorite)
 		values
-		(#{userId},#{friendId},#{isFavorite})
+		(#{userId},#{friendId}, 0)
 	</insert>
 
 	<delete id="deleteFriend" parameterType="Friends">
@@ -29,10 +29,12 @@
 		from friendsInfo
 	</sql>
 
-	<select id="selectFriendsListById" resultMap="FriendsResultMap"
+	<select id="selectFriendsListById" resultMap="FriendsUserResultMap"
 		parameterType="String">
-		<include refid="basicFriendsSql"></include>
-		where userId = #{userId}
+		select
+		u.userId, u.userName, u.nickName
+		from friendsInfo f, userinfo u
+		where f.userId = #{userId} and f.friendid = u.userid
 	</select>
 
 	<select id="selectFriendsListByName" resultMap="FriendsResultMap"
@@ -86,5 +88,11 @@
 		<id column="userId" property="userId" />
 		<result column="friendId" property="friendId" />
 		<result column="isFavorite" property="isFavorite" />
+	</resultMap>
+	
+	<resultMap type="User" id="FriendsUserResultMap">
+		<id column="userId" property="userId" />
+		<result column="userName" property="username" />
+		<result column="nickName" property="nickname" />
 	</resultMap>
 </mapper>

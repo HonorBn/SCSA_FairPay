@@ -23,8 +23,8 @@ public class FriendsDAOImpl implements FriendsDAO {
 		return sqlSession.selectList("friends.", username);
 	}
 
-	public boolean insertFriend(String userIdFrom, String userIdTo) {
-		return sqlSession.insert("friends.insertFriend", new FriendsInfo(userIdFrom, userIdTo)) == 1 ? true : false;
+	public boolean insertFriend(FriendsInfo friend) {
+		return sqlSession.insert("friends.insertFriend", friend) == 1 ? true : false;
 	}
 
 	public boolean deleteFriend(String userIdFrom, String userIdTo) {

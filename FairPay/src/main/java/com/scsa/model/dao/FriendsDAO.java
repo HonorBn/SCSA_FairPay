@@ -2,6 +2,7 @@ package com.scsa.model.dao;
 
 import java.util.List;
 
+import com.scsa.model.vo.FriendsInfo;
 import com.scsa.model.vo.UserInfo;
 
 public interface FriendsDAO {
@@ -10,7 +11,7 @@ public interface FriendsDAO {
 	
 	List<UserInfo> selectFriendsByName(String username);
 	
-	boolean insertFriend(String userIdFrom, String userIdTo);
+	boolean insertFriend(FriendsInfo friend);
 	
 	boolean deleteFriend(String userIdFrom, String userIdTo);
 	

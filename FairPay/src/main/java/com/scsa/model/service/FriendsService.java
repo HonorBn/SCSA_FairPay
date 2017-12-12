@@ -2,6 +2,7 @@ package com.scsa.model.service;
 
 import java.util.List;
 
+import com.scsa.model.vo.FriendsInfo;
 import com.scsa.model.vo.UserInfo;
 
 public interface FriendsService {
@@ -13,7 +14,7 @@ public interface FriendsService {
 	List<UserInfo> getFriendsByName(String username);
 	
 	// 模备 殿废
-	boolean addFriend(String userIdFrom, String userIdTo);
+	boolean addFriend(FriendsInfo friend );
 	
 	// 模备 昏力
 	boolean removeFriend(String userIdFrom, String userIdTo);
