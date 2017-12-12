@@ -33,52 +33,27 @@ public class ClaimDAOImpl implements ClaimDAO {
 	}
 
 	@Override
-	public ClaimInfo selectClaimWithClaimeeList(String claimId) {
-		return sqlSession.selectOne("claim.selectClaimWithClaimeeList", claimId);
+	public ClaimInfo selectClaimDetail(String claimId) {
+		return sqlSession.selectOne("claim.selectClaimDetail", claimId);
 	}
 
 	@Override
-	public ClaimInfo selectClaimWithReceiptList(String claimId) {
-		return sqlSession.selectOne("claim.selectClaimWithReceiptList", claimId);
+	public List<ClaimInfo> selectClaimListDetailByClaimerId(String userId) {
+		return sqlSession.selectList("claim.selectClaimListDetailByClaimerId", userId);
 	}
 
 	@Override
-	public List<ClaimInfo> selectClaimListByClaimerIdWithClaimeeList(String userId) {
-		return sqlSession.selectList("claim.selectClaimListByClaimerIdWithClaimeeList", userId);
-	}
-
-	@Override
-	public List<ClaimInfo> selectClaimListByClaimerIdWithReceiptList(String userId) {
-		return sqlSession.selectList("claim.selectClaimListByClaimerIdWithReceiptList", userId);
-	}
-
-	@Override
-	public List<ClaimInfo> selectClaimListByClaimeeIdWithClaimeeList(String userId) {
-		return sqlSession.selectList("claim.selectClaimListByClaimeeIdWithClaimeeList", userId);
-	}
-
-	@Override
-	public List<ClaimInfo> selectClaimListByClaimeeIdWithReceiptList(String userId) {
-		return sqlSession.selectList("claim.selectClaimListByClaimeeIdWithReceiptList", userId);
+	public List<ClaimInfo> selectClaimListDetailByClaimeeId(String userId) {
+		return sqlSession.selectList("claim.selectClaimListDetailByClaimeeId", userId);
 	}
 	
 	@Override
-	public List<ClaimInfo> selectClaimListByOurIdWithClaimeeList(HashMap<String, String> ourId) {
-		return sqlSession.selectList("claim.selectClaimListByOurIdWithClaimeeList", ourId);
-	}
-	
-	@Override
-	public List<ClaimInfo> selectClaimListByOurIdWithReceiptList(HashMap<String, String> ourId) {
-		return sqlSession.selectList("claim.selectClaimListByOurIdWithReceiptList", ourId);
+	public List<ClaimInfo> selectClaimListDetailByOurId(HashMap<String, String> ourId) {
+		return sqlSession.selectList("claim.selectClaimListDetailByOurId", ourId);
 	}
 
 	@Override
-	public List<ClaimInfo> selectClaimListWithinMeetingWithClaimeeList(String meetingId) {
-		return sqlSession.selectList("claim.selectClaimListWithinMeetingWithClaimeeList", meetingId);
-	}
-
-	@Override
-	public List<ClaimInfo> selectClaimListWithinMeetingWithReceiptList(String meetingId) {
-		return sqlSession.selectList("claim.selectClaimListWithinMeetingWithReceiptList", meetingId);
+	public List<ClaimInfo> selectClaimListDetailWithinMeeting(String meetingId) {
+		return sqlSession.selectList("claim.selectClaimListDetailWithinMeeting", meetingId);
 	}
 }

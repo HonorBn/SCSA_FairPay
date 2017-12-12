@@ -10,6 +10,17 @@
 		</layout>
 	</appender>
 	
+	<logger name="claim">
+		<level value="trace"/>
+		<appender-ref ref="console"/>
+	</logger>
+	
+	<logger name="receipt">
+		<level value="trace"/>
+		<appender-ref ref="console"/>
+	</logger>
+	
+	
 	<!-- Application Loggers -->
 	<logger name="com.scsa.project">
 		<level value="info" />

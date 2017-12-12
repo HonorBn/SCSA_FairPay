@@ -5,6 +5,10 @@ public class ReceiptInfo {
 	private String receiptImg;
 	private String claimId;
 	
+	public ReceiptInfo() {
+		super();
+	}
+
 	public ReceiptInfo(String receiptId, String receiptImg) {
 		this.receiptId = receiptId;
 		this.receiptImg = receiptImg;
