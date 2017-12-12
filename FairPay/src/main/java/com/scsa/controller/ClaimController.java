@@ -96,13 +96,13 @@ public class ClaimController {
 	}
 	
 	@RequestMapping(value = "/ours", method = RequestMethod.POST)
-	public List<ClaimInfo> selectOurClaimList(@RequestBody Ours ours) {
+	public List<ClaimInfo> selectClaimListDetailByOurId(@RequestBody Ours ours) {
 		
 		HashMap<String, String> ourId = new HashMap<String, String>();
 		ourId.put("myId", ours.getMyId());
 		ourId.put("yourId", ours.getYourId());
-		System.out.println(ours.getMyId());
-		return claimService.getClaimListByOurIdWithClaimeeList(ourId);		
+		
+		return claimService.getClaimListDetailByOurId(ourId); 
 	}
 	
 }

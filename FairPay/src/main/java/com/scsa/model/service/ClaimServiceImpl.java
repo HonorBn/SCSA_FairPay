@@ -30,53 +30,28 @@ public class ClaimServiceImpl implements ClaimService {
 	}
 
 	@Override
-	public ClaimInfo getClaimWithClaimeeList(String claimId) {
-		return claimDao.selectClaimWithClaimeeList(claimId);
+	public ClaimInfo getClaimDetail(String claimId) {
+		return claimDao.selectClaimDetail(claimId);
 	}
 
 	@Override
-	public ClaimInfo getClaimWithReceiptList(String claimId) {
-		return claimDao.selectClaimWithReceiptList(claimId);
+	public List<ClaimInfo> getClaimListDetailByClaimerId(String userId) {
+		return claimDao.selectClaimListDetailByClaimerId(userId);
 	}
 
 	@Override
-	public List<ClaimInfo> getClaimListByClaimerIdWithClaimeeList(String userId) {
-		return claimDao.selectClaimListByClaimerIdWithClaimeeList(userId);
-	}
-
-	@Override
-	public List<ClaimInfo> getClaimListByClaimerIdWithReceiptList(String userId) {
-		return claimDao.selectClaimListByClaimerIdWithReceiptList(userId);
-	}
-
-	@Override
-	public List<ClaimInfo> getClaimListByClaimeeIdWithClaimeeList(String userId) {
-		return claimDao.selectClaimListByClaimeeIdWithClaimeeList(userId);
-	}
-
-	@Override
-	public List<ClaimInfo> getClaimListByClaimeeIdWithReceiptList(String userId) {
-		return claimDao.selectClaimListByClaimeeIdWithReceiptList(userId);
+	public List<ClaimInfo> getClaimListDetailByClaimeeId(String userId) {
+		return claimDao.selectClaimListDetailByClaimeeId(userId);
 	}
 	
 	@Override
-	public List<ClaimInfo> getClaimListByOurIdWithClaimeeList(HashMap<String, String> ourId) {
-		return claimDao.selectClaimListByOurIdWithClaimeeList(ourId);
+	public List<ClaimInfo> getClaimListDetailByOurId(HashMap<String, String> ourId) {
+		return claimDao.selectClaimListDetailByOurId(ourId);
 	}
 
 	@Override
-	public List<ClaimInfo> getClaimListByOurIdWithReceiptList(HashMap<String, String> ourId) {
-		return claimDao.selectClaimListByOurIdWithReceiptList(ourId);
-	}
-
-	@Override
-	public List<ClaimInfo> getClaimListWithinMeetingWithClaimeeList(String meetingId) {
-		return claimDao.selectClaimListWithinMeetingWithClaimeeList(meetingId);
-	}
-
-	@Override
-	public List<ClaimInfo> getClaimListWithinMeetingWithReceiptList(String meetingId) {
-		return claimDao.selectClaimListWithinMeetingWithReceiptList(meetingId);
+	public List<ClaimInfo> getClaimListDetailWithinMeeting(String meetingId) {
+		return claimDao.selectClaimListDetailWithinMeeting(meetingId);
 	}
 	
 }
