@@ -4,11 +4,18 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.scsa.model.service.FriendsService;
+import com.scsa.model.vo.FriendsInfo;
+import com.scsa.model.vo.FriendsList;
+import com.scsa.model.vo.MeetingInfo;
+import com.scsa.model.vo.MeetingList;
 import com.scsa.model.vo.UserInfo;
 
 @RestController
@@ -20,38 +27,39 @@ public class FriendsController {
 	public void setFriendsService(FriendsService friendsService) {
 		this.friendsService = friendsService;
 	}
-
-	// 아이디로 친구 목록 조회
-	@RequestMapping(value = "/friends_list_by_id.do")
-	public String friends_list_by_Id(Model model, String userId) {
-		List<UserInfo> list = friendsService.getFriendsById(userId);
-		model.addAttribute("list", list);
-		return "friends_list_by_id";
+	
+	// 아이디로 친구 목록 조회  : done
+	@RequestMapping(value = "/friends/list/{userId}", method = RequestMethod.GET)
+	public FriendsList getFriendsByUserId(@PathVariable String userId) {
+		System.out.println("아이디로 친구목록 조회 요청 발생 userId : " + userId);
+		FriendsList friendsList = new FriendsList();
+		friendsList.setFriendsList(friendsService.getFriendsById(userId));
+		return friendsList;
 	}
 
-	// 이름으로 친구 목록 조회
-	@RequestMapping(value = "/friends_list_by_name.do")
-	public String friends_list_by_name(Model model, String username) {
-		List<UserInfo> list = friendsService.getFriendsByName(username);
-		model.addAttribute("list", list);
-		return "friends_list_by_name";
+	// 이름으로 친구 목록 조회  : 보류
+	@RequestMapping(value = "/friends/list/name/{username}")
+	public FriendsList getFriendsByUsername(@PathVariable String username) {
+		System.out.println("아이디로 친구목록 조회 요청 발생 userId : " + username);
+		FriendsList friendsList = new FriendsList();
+		friendsList.setFriendsList(friendsService.getFriendsByName(username));
+		return friendsList;
 	}
 
-	// 친구 등록
-	@RequestMapping(value = "/add_friend.do")
-	public String add_friend(Model model, @RequestParam(name = "userId") String userId,
-			@RequestParam(name = "friendId") String friendId) {
-		boolean result = friendsService.addFriend(userId, friendId);
+	// 친구 등록  : done
+	@RequestMapping(value = "/friends/add", method = RequestMethod.POST,
+			produces = "text/plain;charset=utf-8")
+	public String addFriend(@RequestBody FriendsInfo friend) {
+		System.out.println("친구 생성 요청 발생 : "+friend);
+		boolean result = friendsService.addFriend(friend);
 		if (result) {
-			model.addAttribute("msg", "친구 등록에 성공하였습니다");
+			return "친구가 등록되었습니다.";
 		} else {
-			model.addAttribute("msg", "친구 등록에 실패하였습니다");
+			return "친구등록에 실패하였습니다.";
 		}
-		model.addAttribute("userId", userId);
-		return "friends_list_by_id";
 	}
 
-	// 친구 삭제
+	// 친구 삭제  : 보류
 	@RequestMapping(value = "/delete_friend.do")
 	public String delete_friend(Model model, @RequestParam(name = "userId") String userId,
 			@RequestParam(name = "friendId") String friendId) {

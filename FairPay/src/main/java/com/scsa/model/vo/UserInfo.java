@@ -21,6 +21,13 @@ public class UserInfo {
 	}
 
 
+	public UserInfo(String userId, String username, String nickname) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.nickname = nickname;
+	}
+
 	public UserInfo(String userId, String password, String username, String nickname) {
 		super();
 		this.userId = userId;

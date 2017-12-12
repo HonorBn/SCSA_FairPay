@@ -3,6 +3,7 @@ package com.scsa.model.service;
 import java.util.List;
 
 import com.scsa.model.dao.FriendsDAO;
+import com.scsa.model.vo.FriendsInfo;
 import com.scsa.model.vo.UserInfo;
 
 public class FriendsServiceImpl implements FriendsService {
@@ -21,8 +22,8 @@ public class FriendsServiceImpl implements FriendsService {
 		return friendsDao.selectFriendsByName(username);
 	}
 
-	public boolean addFriend(String userIdFrom, String userIdTo) {
-		return friendsDao.insertFriend(userIdFrom, userIdTo);
+	public boolean addFriend(FriendsInfo friend) {
+		return friendsDao.insertFriend(friend);
 	}
 
 	public boolean removeFriend(String userIdFrom, String userIdTo) {
