@@ -11,12 +11,12 @@
 
 	<insert id="insertUser" parameterType="User">
 		insert into
-		userInfo(userId,password,username,nickname,userSegNo,authorizationCode,accessToken)
-		values(#{userId},#{password},#{username},#{nickname},#{userSegNo},#{authorizationCode},#{accessToken})
+		userInfo(userId,password,username,nickname,userSeqNo,authorizationCode,accessToken)
+		values(#{userId},#{password},#{username},#{nickname},#{userSeqNo},#{authorizationCode},#{accessToken})
 	</insert>
 
 	<sql id="basicUserSql">
-		select userId,password,username,nickname,userSegNo,authorizationCode,accessToken from
+		select userId,password,username,nickname,userSeqNo,authorizationCode,accessToken from
 		userInfo
 	</sql>
 
@@ -39,7 +39,7 @@
 	
 	<select id="selectUserByUserSeqNo" parameterType="String" resultType="User">
 		<include refid="basicUserSql" />
-		where userSegNo=#{userSegNo}
+		where userSeqNo=#{userSeqNo}
 	</select>
 
 	
@@ -49,7 +49,7 @@
 		<result column="password" property="password" />
 		<result column="username" property="username" />
 		<result column="nickname" property="nickname" />
-		<result column="userSegNo" property="userSegNo" />
+		<result column="userSeqNo" property="userSeqNo" />
 		<result column="authorizationCode" property="authorizationCode" />
 		<result column="accessToken" property="accessToken" />
 	</resultMap>

@@ -5,7 +5,7 @@ public class UserInfo {
 	private String password;
 	private String username;
 	private String nickname;
-	private String userSegNo;
+	private String userSeqNo;
 	private String authorizationCode;
 	private String accessToken;
 	
@@ -35,13 +35,13 @@ public class UserInfo {
 		this.username = username;
 		this.nickname = nickname;
 	}
-	public UserInfo(String userId, String password, String username, String nickname,String userSegNo, String authorizationCode,String accessToken) {
+	public UserInfo(String userId, String password, String username, String nickname,String userSeqNo, String authorizationCode,String accessToken) {
 		super();
 		this.userId = userId;
 		this.password = password;
 		this.username = username;
 		this.nickname = nickname;
-		this.userSegNo = userSegNo;
+		this.userSeqNo = userSeqNo;
 		this.authorizationCode = authorizationCode;
 		this.accessToken = accessToken;
 	}
@@ -70,15 +70,14 @@ public class UserInfo {
 		this.nickname = nickname;
 	}
 
+	public String getUserSeqNo() {
+		return userSeqNo;
+	}
 
-	public String getUserSegNo() {
-		return userSegNo;
+	public void setUserSeqNo(String userSeqNo) {
+		this.userSeqNo = userSeqNo;
 	}
-	public void setUserSegNo(String userSegNo) {
-		this.userSegNo = userSegNo;
-	}
-	
-	
+
 	public String getAuthorizationCode() {
 		return authorizationCode;
 	}
@@ -92,27 +91,13 @@ public class UserInfo {
 	public void setAccessToken(String accessToken) {
 		this.accessToken = accessToken;
 	}
+
 	@Override
 	public String toString() {
-		StringBuilder builder = new StringBuilder();
-		builder.append("UserInfo [userId=");
-		builder.append(userId);
-		builder.append(", password=");
-		builder.append(password);
-		builder.append(", username=");
-		builder.append(username);
-		builder.append(", nickname=");
-		builder.append(nickname);
-		builder.append(", userSegNo=");
-		builder.append(userSegNo);
-		builder.append(", authorizationCode=");
-		builder.append(authorizationCode);
-		builder.append(", accessToken=");
-		builder.append(accessToken);
-		builder.append("]");
-		return builder.toString();
+		return "UserInfo [userId=" + userId + ", password=" + password + ", username=" + username + ", nickname="
+				+ nickname + ", userSeqNo=" + userSeqNo + ", authorizationCode=" + authorizationCode + ", accessToken="
+				+ accessToken + "]";
 	}
-	
 	
 	
 }

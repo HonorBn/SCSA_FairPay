@@ -54,17 +54,18 @@ public class UserController {
 
 	//아이디로 유저 가져오기
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-	public String getUserById(Model model,@PathVariable String userId) {
-		model.addAttribute("user", userService.getUserById(userId));
-		return "user_view";
+	public UserInfo getUserById(Model model,@PathVariable String userId) {
+		System.out.println("아이디");
+		return userService.getUserById(userId);
 		// return userService.findUserWithContacts(userId);
 	}
 
-	@RequestMapping(value = "/user/{userSeqNo}", method = RequestMethod.GET)
+/*	@RequestMapping(value = "/user/{userSeqNo}", method = RequestMethod.GET)
 	public String getUserByUserSeqNo(Model model, @PathVariable String userSeqNo) {
+		System.out.println("시퀀스");
 		model.addAttribute("user", userService.getUserById(userSeqNo));
 		return "user_view";
-	}
+	}*/
 	
 	@RequestMapping(value = "/login", method = RequestMethod.PUT)
 	public String login(@RequestBody UserInfo user) {
