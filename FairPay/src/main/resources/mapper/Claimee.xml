@@ -5,6 +5,14 @@
   
 <mapper namespace="claimee">
 
+<!-- 	<insert id="insertClaimee" parameterType="Claimee">
+		insert into
+		claimeeInfo(paymentId, isPaid, tran_amt, claimId, claimeeId)
+		values(#{paymentId}, #{isPaid}, #{tran_amt}, #{claimId}, #{claimeeId})
+		<selectKey order="BEFORE" keyProperty="paymentId" resultType="string">
+			select payerId_seq.nextval from dual
+		</selectKey>
+	</insert> -->
 	<insert id="insertClaimee" parameterType="Claimee">
 		insert into
 		claimeeInfo(paymentId, isPaid, tran_amt, claimId, claimeeId)

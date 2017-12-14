@@ -7,6 +7,7 @@ public class ClaimInfo {
 	private String claimDate;
 	private String totalPrice;
 	private String claimerId;
+	private UserInfo claimer;
 	private String claimer_accountNumber;
     private String meetingId;
 	private List<ClaimeeInfo> claimeeList;
@@ -32,6 +33,14 @@ public class ClaimInfo {
 
 	public void setClaimId(String claimId) {
 		this.claimId = claimId;
+	}
+	
+	public UserInfo getClaimer() {
+		return claimer;
+	}
+
+	public void setClaimer(UserInfo claimer) {
+		this.claimer = claimer;
 	}
 
 	public String getClaimDate() {

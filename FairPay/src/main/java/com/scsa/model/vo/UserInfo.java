@@ -39,6 +39,16 @@ public class UserInfo {
 		this.nickname = nickname;
 		this.fcmId = fcmId;
 	}
+	public UserInfo(String userId, String username, String nickname, String userSeqNo, String authorizationCode, String accessToken, String fcmId) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.nickname = nickname;
+		this.userSeqNo = userSeqNo;
+		this.authorizationCode = authorizationCode;
+		this.accessToken = accessToken;
+		this.fcmId = fcmId;
+	}
 	public UserInfo(String userId, String password, String username, String nickname,String userSeqNo, String authorizationCode, String accessToken, String fcmId) {
 		super();
 		this.userId = userId;
