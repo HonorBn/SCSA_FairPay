@@ -277,6 +277,7 @@ public class MeetingController {
 	// 일정 아이디로 일정 결제 정보 리스트 가져오기  : done
 	@RequestMapping(value = "/eventClaim/list/{eventId}", method = RequestMethod.GET)
 	public EventClaimList getEventClaimListByEventId(@PathVariable String eventId) {
+		System.out.println("일정 아이디로 일정 결제 정보 요청 : eventId "+eventId);
 		EventClaimList eventClaimList = new EventClaimList();
 		eventClaimList.setEventClaimList(eventClaimService.searchEventClaimsByEventId(eventId));
 		return eventClaimList;

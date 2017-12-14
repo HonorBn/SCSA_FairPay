@@ -32,7 +32,11 @@
 	</sql>
 	
 	<select id="selectEventsByMeetingId" resultType="Event" parameterType="string">
-		<include refid="basicEventSql"></include>
+		select eventId,
+				to_char(eventDate, 'rr/mm/dd') eventDate,
+				description,
+				meetingId
+		from EventInfo
 		where meetingId = #{meetingId}
 	</select>
 	
