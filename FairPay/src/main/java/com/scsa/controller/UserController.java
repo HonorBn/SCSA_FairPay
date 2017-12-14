@@ -67,20 +67,17 @@ public class UserController {
 		return "user_view";
 	}*/
 	
-	@RequestMapping(value = "/login", method = RequestMethod.PUT)
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public String login(@RequestBody UserInfo user) {
-		String message=null;
-		if(userService.getUserById(user.getUserId())==null){
-			message="존재하지 않는 사용자입니다.";
-			return "login";
-		}
-		if(userService.getUserById(user.getUserId()).getPassword().equals(user.getPassword())){
-			message ="로그인성공";
-			return "settlement_list_by_id";
-		}else{
-			message= "로그인실패(비밀번호오류)";
-			return "login";
-		}
+		
+		// ID, PW 일치 확인
+		if(userService.getUserById(user.getUserId()) == null) return "존재하지 않는 사용자입니다.";
+		
+		System.out.println(user.getFcmId());
+		// Token 갱신
+		userService.updateToken(user);
+		
+		return "로그인 성공";
 		
 	}
 	

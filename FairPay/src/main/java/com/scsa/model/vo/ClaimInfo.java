@@ -9,7 +9,6 @@ public class ClaimInfo {
 	private String claimerId;
 	private String claimer_accountNumber;
     private String meetingId;
-    private String receiptImg;
 	private List<ClaimeeInfo> claimeeList;
 	private List<ReceiptInfo> receiptList;
 	
@@ -18,14 +17,13 @@ public class ClaimInfo {
 	}
 	
 	public ClaimInfo(String claimId, String claimDate, String totalPrice, String claimerId,
-			String claimer_accountNumber, String meetingId, String receiptImg) {
+			String claimer_accountNumber, String meetingId) {
 		this.claimId = claimId;
 		this.claimDate = claimDate;
 		this.totalPrice = totalPrice;
 		this.claimerId = claimerId;
 		this.claimer_accountNumber = claimer_accountNumber;
 		this.meetingId = meetingId;
-		this.receiptImg = receiptImg;
 	}
 
 	public String getClaimId() {
@@ -74,14 +72,6 @@ public class ClaimInfo {
 
 	public void setMeetingId(String meetingId) {
 		this.meetingId = meetingId;
-	}
-
-	public String getReceiptImg() {
-		return receiptImg;
-	}
-
-	public void setReceiptImg(String receiptImg) {
-		this.receiptImg = receiptImg;
 	}
 
 	public List<ClaimeeInfo> getClaimeeList() {

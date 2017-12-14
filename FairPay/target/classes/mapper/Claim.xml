@@ -80,7 +80,7 @@
 		and c.claimId= #{claimId}
 	</select>
 	
-	<select id="selectClaimListDetailByClaimerId" parameterType="String" resultMap="ClaimDetailResultMap">
+	<select id="selectClaimListDetailByMyId" parameterType="String" resultMap="ClaimDetailResultMap">
 		select	c.claimId,
 				c.claimDate,
 				c.totalPrice,
@@ -99,31 +99,7 @@
 		from ClaimInfo c, ClaimeeInfo e, ReceiptInfo r
 		where c.claimId = e.claimId(+)
 		and c.claimId = r.claimId(+)
-		and c.claimerId= #{userId}
-	</select>
-	
-	<select id="selectClaimListDetailByClaimeeId" parameterType="String" resultMap="ClaimDetailResultMap">
-		select	c.claimId,
-				c.claimDate,
-				c.totalPrice,
-				c.claimerId,
-				c.claimer_accountNumber,
-				e.paymentId,
-				e.paymentDate,
-				e.isPaid,
-				e.tran_amt,
-				e.claimId,
-				e.claimeeId,
-				e.claimee_accountNumber,
-				r.receiptId,
-				r.receiptImg,
-				r.claimId
-		from ReceiptInfo r, ClaimeeInfo e, (select * from ClaimInfo
-							 				where claimId in (	select claimId
-																from claimeeInfo
-																where claimeeId = #{userId} )) c
-		where c.claimId = e.claimId(+)
-		and c.claimId = r.claimId(+)
+		and (c.claimerId= #{userId} or e.claimeeId= #{userId})
 	</select>
 	
 	<select id="selectClaimListDetailByOurId" parameterType="map" resultMap="ClaimDetailResultMap">

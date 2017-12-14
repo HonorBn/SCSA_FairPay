@@ -11,10 +11,14 @@ public class UserServiceImpl implements UserService {
 		this.userDao = userDao;
 	}
 
-	public boolean login(String userId, String password) {
+	public boolean login(UserInfo user) {
 		
-		return userDao.login(userId, password);
+		return userDao.login(user);
 
+	}
+	
+	public boolean updateToken(UserInfo user) {
+		return userDao.updateToken(user);
 	}
 
 	public boolean logout() {

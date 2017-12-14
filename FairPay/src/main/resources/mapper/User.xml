@@ -6,8 +6,13 @@
 
 	<select id="login" parameterType="User" resultType="User">
 		select * from
-		userInfo where userId=#{userId} and password=#{password}
+		userInfo where userId = #{userId} and password=#{password}
 	</select>
+	
+	<update id="updateToken" parameterType="User">
+		update userInfo set fcmId = #{fcmId}
+		where userId = #{userId} 
+	</update>
 
 	<insert id="insertUser" parameterType="User">
 		insert into
@@ -20,10 +25,9 @@
 		userInfo
 	</sql>
 
-
-	<update id="updateUser" parameterType="User"> 
-		update userInfo set password=#{password},authorizationCode=#{authorizationCode} ,accessToken=#{accessToken}
-		where userId=#{userId} 
+	<update id="updateUser" parameterType="User">
+		update userInfo set password=#{password}, authorizationCode=#{authorizationCode}, accessToken=#{accessToken}
+		where userId = #{userId} 
 	</update> 
 
 	<delete id="deleteUser" parameterType="String">

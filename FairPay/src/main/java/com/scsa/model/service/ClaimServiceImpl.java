@@ -35,13 +35,8 @@ public class ClaimServiceImpl implements ClaimService {
 	}
 
 	@Override
-	public List<ClaimInfo> getClaimListDetailByClaimerId(String userId) {
-		return claimDao.selectClaimListDetailByClaimerId(userId);
-	}
-
-	@Override
-	public List<ClaimInfo> getClaimListDetailByClaimeeId(String userId) {
-		return claimDao.selectClaimListDetailByClaimeeId(userId);
+	public List<ClaimInfo> getClaimListDetailByMyId(String userId) {
+		return claimDao.selectClaimListDetailByMyId(userId);
 	}
 	
 	@Override

@@ -38,13 +38,8 @@ public class ClaimDAOImpl implements ClaimDAO {
 	}
 
 	@Override
-	public List<ClaimInfo> selectClaimListDetailByClaimerId(String userId) {
-		return sqlSession.selectList("claim.selectClaimListDetailByClaimerId", userId);
-	}
-
-	@Override
-	public List<ClaimInfo> selectClaimListDetailByClaimeeId(String userId) {
-		return sqlSession.selectList("claim.selectClaimListDetailByClaimeeId", userId);
+	public List<ClaimInfo> selectClaimListDetailByMyId(String userId) {
+		return sqlSession.selectList("claim.selectClaimListDetailByMyId", userId);
 	}
 	
 	@Override

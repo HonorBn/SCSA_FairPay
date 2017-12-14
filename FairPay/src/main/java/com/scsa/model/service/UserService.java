@@ -4,8 +4,9 @@ import com.scsa.model.vo.UserInfo;
 
 public interface UserService {
 	
-	boolean login(String userId, String password);
+	boolean login(UserInfo user);
 	boolean logout();
+	boolean updateToken(UserInfo user);
 	boolean addUser(UserInfo user);
 	boolean updateUser(UserInfo user);
 	UserInfo getUserById(String userId);
