@@ -30,10 +30,36 @@ public class UserInfo {
 		this.fcmId = fcmId;
 	}
 	
-	// 이후 생성자는 필요에 따라 추가할 것 //
+	// 비밀번호 제외
+	public UserInfo(String userId, String username, String nickname, String userSeqNo, String authorizationCode,
+			String accessToken, String fcmId) {
+		super();
+		this.userId = userId;
+		this.username = username;
+		this.nickname = nickname;
+		this.userSeqNo = userSeqNo;
+		this.authorizationCode = authorizationCode;
+		this.accessToken = accessToken;
+		this.fcmId = fcmId;
+	}
 	
-	
+	public UserInfo(String userId, String password, String username, String nickname, String userSeqNo,
+			String authorizationCode, String accessToken, String fcmId) {
+		super();
+		this.userId = userId;
+		this.password = password;
+		this.username = username;
+		this.nickname = nickname;
+		this.userSeqNo = userSeqNo;
+		this.authorizationCode = authorizationCode;
+		this.accessToken = accessToken;
+		this.fcmId = fcmId;
+	}
 
+	// 이후 생성자는 필요에 따라 추가할 것 //
+
+	
+	
 	public String getUserId() {
 		return userId;
 	}

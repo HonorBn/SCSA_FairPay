@@ -21,7 +21,7 @@
 	</insert>
 
 	<sql id="basicUserSql">
-		select userId,password,username,nickname,userSeqNo,authorizationCode,accessToken,fcmid from
+		select userId,username,nickname,userSeqNo,authorizationCode,accessToken,fcmid from
 		userInfo
 	</sql>
 
