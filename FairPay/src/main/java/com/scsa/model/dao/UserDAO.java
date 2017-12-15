@@ -10,4 +10,5 @@ public interface UserDAO {
 	boolean updateUser(UserInfo user);
 	UserInfo selectUserById(String userId);
 	UserInfo selectUserByUserSeqNo(String userSeqNo);
+	UserInfo selectUserWithAccountListById(String userId);
 }

@@ -1,14 +1,6 @@
 package com.scsa.controller;
 
-import java.text.DateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,62 +20,57 @@ UserInfo getUserByUserSeqNo(String userSeqNo);*/
 
 @RestController
 public class UserController {
+	
 	@Autowired
 	private UserService userService;
 
-	//사용자추가
+	// 사용자추가
 	@RequestMapping(value = "/user", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public String addUser(@RequestBody UserInfo user) {
-		String message=null;
-		boolean result = userService.addUser(user);
-		if (result) {
-			message="등록에 성공하였습니다";
-		} else {
-			message= "등록에 실패하였습니다";
-		}
-		return "login";
 		
+		String message;
+		if (userService.addUser(user)) message="등록에 성공하였습니다";
+		else message= "등록에 실패하였습니다";
+		
+		return message;
 	}
 
 	//사용자변경
 	@RequestMapping(value = "/user", method = RequestMethod.PUT)
 	public void updateUser(@RequestBody UserInfo user) {
 		userService.updateUser(user);
-		
 	}
 
 	//아이디로 유저 가져오기
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
 	public UserInfo getUserById(Model model,@PathVariable String userId) {
-		System.out.println("아이디");
 		return userService.getUserById(userId);
-		// return userService.findUserWithContacts(userId);
+	}
+	
+	@RequestMapping(value = "/userWithAccount/{userId}", method = RequestMethod.GET)
+	public UserInfo getUserWithAccountListById(Model model, @PathVariable String userId) {
+		
+		return userService.getUserWithAccountListById(userId);
 	}
 
-/*	@RequestMapping(value = "/user/{userSeqNo}", method = RequestMethod.GET)
+	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
+	public String login(@RequestBody UserInfo user) {
+		
+		// ID, PW 일치 확인
+		UserInfo checkedUser = userService.getUserById(user.getUserId());
+		if (checkedUser == null) return "존재하지 않는 사용자입니다";
+		
+		// Token 갱신
+		userService.updateToken(user);
+		return checkedUser.getUsername() + "님 로그인되었습니다";
+	}
+	
+	/*	@RequestMapping(value = "/user/{userSeqNo}", method = RequestMethod.GET)
 	public String getUserByUserSeqNo(Model model, @PathVariable String userSeqNo) {
 		System.out.println("시퀀스");
 		model.addAttribute("user", userService.getUserById(userSeqNo));
 		return "user_view";
 	}*/
-	
-	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
-	public String login(@RequestBody UserInfo user) {
-		
-		// ID, PW 일치 확인
-		if(userService.getUserById(user.getUserId()) == null) return "존재하지 않는 사용자입니다.";
-		
-		System.out.println(user.getFcmId());
-		// Token 갱신
-		userService.updateToken(user);
-		
-		return "로그인 성공";
-		
-	}
-	
-	
-	
-	
 
 	/*
 	 * @RequestMapping(value = "/user/{userId}", method = RequestMethod.DELETE)
@@ -99,9 +86,7 @@ public class UserController {
 	 * userService.remove(userId); }
 	 */
 
-	// @RequestMapping(value = "/xml/users", produces =
-	// "application/xml;charset=UTF-8")
-	
+	/* @RequestMapping(value = "/xml/users", produces = "application/xml;charset=UTF-8") */
 
 	/*
 	 * @Controller public class HomeController {

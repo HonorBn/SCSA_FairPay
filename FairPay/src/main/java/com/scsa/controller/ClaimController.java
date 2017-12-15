@@ -45,6 +45,7 @@ public class ClaimController {
 	public String addClaimInfo(@RequestBody ClaimInfo claim) throws IOException, JSONException {
 		
 		// 청구 등록
+		claim.setClaimDate(new Date(System.currentTimeMillis()).toString());
 		claimService.createClaim(claim);
 		claim.setClaimId(claim.getClaimId());
 
@@ -55,7 +56,7 @@ public class ClaimController {
 		if (claim.getReceiptList() != null)
 			addReceiptInfo(claim);
 		
-		return "등록에 성공하였습니다";
+		return "청구 요청을 발송했습니다";
 	}
 
 	// 피청구 등록, fcm push
@@ -69,7 +70,6 @@ public class ClaimController {
 		}
 		
 		sendFCM(claim);
-		
 	}
 
 	// 영수증 등록
@@ -81,7 +81,6 @@ public class ClaimController {
 			receipt.setClaimId(claim.getClaimId());
 			receiptService.createReceipt(receipt);
 		}
-		
 	}
 	
 	
@@ -92,7 +91,7 @@ public class ClaimController {
 	@RequestMapping(value = "/claim", method = RequestMethod.PUT)
 	public void updateClaimee(@RequestBody Pay pay) {
 
-		// 입출금 정보 추출 (싹 다 가져오는 메소드)
+		// 입출금 정보 추출
 		ClaimInfo claim = claimeeService.getClaimeeByPaymentId(pay.getPaymentId());
 		
 		ClaimeeInfo claimee = claim.getClaimeeList().get(0);
@@ -104,7 +103,7 @@ public class ClaimController {
 		 * 입금 API 호출
 		 * Input : claimee (이용기관 accessToken, 입금이체용암호문구, 출금계좌인자내역, 입금계좌 핀테크번호, 임금계좌인자내역, 거래금액, 요청일시)
 		 */
-		//bankAPIService.transfer(claim);
+		bankAPIService.transfer(claim);
 		
 		claimee.setIsPaid(1);
 		claimee.setPaymentDate(new Date(System.currentTimeMillis()).toString());
@@ -215,7 +214,7 @@ public class ClaimController {
         // Parse the JSON string and return the notification key
         String successNum = new JSONObject(responseString).getString("success");
         
-        System.out.println(successNum);
+        System.out.println("총 " + tokenSize + "개 Push 요청 중 " + successNum + "개 성공");
 	}
 	
 }

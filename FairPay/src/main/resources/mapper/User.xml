@@ -43,20 +43,27 @@
 		where userId=#{userId}
 	</select>
 	
+	<select id="selectUserWithAccountListById" parameterType="String" resultMap="UserWithAccountResultMap">
+		select u.userId, accountNumber, bankCode, accountAlias
+		from userInfo u, accountInfo a
+		where u.userId = a.userId
+		and userId = #{userId}
+	</select>
+	
 	<select id="selectUserByUserSeqNo" parameterType="String" resultType="User">
 		<include refid="basicUserSql" />
 		where userSeqNo=#{userSeqNo}
 	</select>
 	
-	<resultMap type="User" id="UserResultMap">
+	<resultMap type="User" id="UserWithAccountResultMap">
 		<id column="userId" property="userId" />
-		<result column="password" property="password" />
-		<result column="username" property="username" />
-		<result column="nickname" property="nickname" />
-		<result column="userSeqNo" property="userSeqNo" />
-		<result column="authorizationCode" property="authorizationCode" />
-		<result column="accessToken" property="accessToken" />
-		<result column="fcmId" property="fcmId" />
+		
+		<collection property="accountList" ofType="Account">
+			<id column="accountNumber" property="accountNumber" />
+			<result column="bankCode" property="bankCode" />
+			<result column="accountAlias" property="accountAlias" />
+		</collection>
+		
 	</resultMap>
 
 
