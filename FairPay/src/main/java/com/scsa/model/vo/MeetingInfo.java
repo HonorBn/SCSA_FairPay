@@ -11,6 +11,11 @@ public class MeetingInfo {
 		super();
 	}
 
+	public MeetingInfo(String meetingId) {
+		super();
+		this.meetingId = meetingId;
+	}
+
 	public MeetingInfo(String meetingId, String managerId, String memberCount, String groupName, String meetingImage) {
 		super();
 		this.meetingId = meetingId;

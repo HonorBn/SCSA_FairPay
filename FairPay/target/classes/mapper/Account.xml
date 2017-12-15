@@ -5,7 +5,7 @@
   
 <mapper namespace="account">
 
-<!-- 	
+	<!-- 	
 	private String accountNumber;
 	private String bankCode;
 	private String userId;
@@ -16,25 +16,21 @@
 	boolean deleteAccount(String accountNumber,String userId ); 
 	-->
 
-
 	<insert id="insertAccount" parameterType="Account">
 		insert into
 		accountinfo(accountNumber, bankCode, userId, accountAlias)
 		values(#{accountNumber}, #{bankCode}, #{userId}, #{accountAlias})
 	</insert>
 	
-	<select id="selectClaimWithReceiptList" parameterType="String" resultType="Account">
-		select accountNumber, bankCode, userId, accountAlias
+	<select id="selectAccountByUserId" parameterType="String" resultType="Account">
+		select accountNumber, bankCode, userId, accountAlias, meetingId
 		from accountinfo
 		where userId = #{userId}
 	</select>
-	
 			
 	<delete id="deleteAccount" parameterType="map">
 		delete from accountinfo
 		where accountNumber = #{accountNumber} and userId = #{userId} 
 	</delete>
-	
-	
 	
 </mapper>

@@ -1,17 +1,10 @@
 package com.scsa.controller;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.sql.Date;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.util.LinkedMultiValueMap;
@@ -21,14 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
-
 import com.scsa.data.Ours;
 import com.scsa.data.Pay;
 import com.scsa.model.service.BankAPIService;
 import com.scsa.model.service.ClaimService;
 import com.scsa.model.service.ClaimeeService;
 import com.scsa.model.service.ReceiptService;
-import com.scsa.model.service.UserService;
 import com.scsa.model.vo.ClaimInfo;
 import com.scsa.model.vo.ClaimeeInfo;
 import com.scsa.model.vo.ReceiptInfo;
@@ -36,8 +27,6 @@ import com.scsa.model.vo.ReceiptInfo;
 @RestController
 public class ClaimController {
 
-	@Autowired
-	private UserService userService;
 	@Autowired
 	private ClaimService claimService;
 	@Autowired
@@ -62,8 +51,6 @@ public class ClaimController {
 		if (claim.getReceiptList() != null)
 			addReceiptInfo(claim);
 		
-		
-		
 		return "등록에 성공하였습니다";
 	}
 
@@ -75,10 +62,9 @@ public class ClaimController {
 		for (ClaimeeInfo claimee : claimeeList) {	// Batch하면 좋을듯
 			claimee.setClaimId(claim.getClaimId());
 			claimeeService.createClaimee(claimee);
-			
 		}
 		
-		sendFCM(claimeeList);
+		//sendFCM(claimeeList);
 		
 	}
 
@@ -87,13 +73,55 @@ public class ClaimController {
 		
 		List<ReceiptInfo> receiptList = claim.getReceiptList();
 		
-		
 		for (ReceiptInfo receipt : receiptList) {
 			receipt.setClaimId(claim.getClaimId());
 			receiptService.createReceipt(receipt);
 		}
 		
+	}
+	
+	
+	// 청구 수정, 청구 삭제 추후 구현
+	
+	
+	// 피청구 수정 (청구 납부 완료했을 때)
+	@RequestMapping(value = "/claim", method = RequestMethod.PUT)
+	public void updateClaimee(@RequestBody Pay pay) {
+
+		// 입출금 정보 추출 (싹 다 가져오는 메소드)
+		ClaimInfo claim = claimeeService.getClaimeeByPaymentId(pay.getPaymentId());
 		
+		ClaimeeInfo claimee = claim.getClaimeeList().get(0);
+		claimee.getAccount().setAccountNumber(pay.getClaimee_accountNumber());
+		
+		/*
+		 * 출금 API 호출
+		 * Input : claimee (피청구인 accessToken, 입금계좌인자내역, 출금계좌 핀테크번호, 거래금액, 요청일시[현재])
+		 * 입금 API 호출
+		 * Input : claimee (이용기관 accessToken, 입금이체용암호문구, 출금계좌인자내역, 입금계좌 핀테크번호, 임금계좌인자내역, 거래금액, 요청일시)
+		 */
+		//bankAPIService.transfer(claim);
+		
+		claimee.setIsPaid(1);
+		claimee.setPaymentDate(new Date(System.currentTimeMillis()).toString());
+
+		claimeeService.updateClaimee(claimee);
+		
+	}
+	
+	@RequestMapping(value = "/mine", method = RequestMethod.POST)
+	public List<ClaimInfo> selectClaimListDetailByMyId(@RequestBody String myId) {
+		return claimService.getClaimListDetailByMyId(myId); 
+	}
+	
+	@RequestMapping(value = "/ours", method = RequestMethod.POST)
+	public List<ClaimInfo> selectClaimListDetailByOurId(@RequestBody Ours ours) {
+		
+		HashMap<String, String> ourId = new HashMap<String, String>();
+		ourId.put("myId", ours.getMyId());
+		ourId.put("yourId", ours.getYourId());
+		
+		return claimService.getClaimListDetailByOurId(ourId); 
 	}
 	
 	public void sendFCM(List<ClaimeeInfo> claimeeList) throws IOException {
@@ -102,7 +130,7 @@ public class ClaimController {
 		int tokenSize = claimeeList.size();
 		String[] tokenList = new String[tokenSize];
 		for (int i = 0; i < tokenSize; i++) {
-			tokenList[i] = claimeeList.get(i).getClaimeeUserInfo().getFcmId();
+			tokenList[i] = claimeeList.get(i).getClaimee().getFcmId();
 		}
 		
 		String url = "https://android.googleapis.com/gcm/notification";
@@ -146,49 +174,4 @@ public class ClaimController {
 		
 		System.out.println((new RestTemplate().postForObject(url, request, Map.class).get("success")));
 	}
-	
-	// 청구 수정, 청구 삭제 추후 구현
-	
-	
-	// 피청구 수정 (청구 납부 완료했을 때)
-	@RequestMapping(value = "/claim", method = RequestMethod.PUT)
-	public void updateClaimee(@RequestBody Pay pay) {
-
-		// 입출금 정보 추출
-		ClaimeeInfo claimee = claimeeService.selectClaimeeBefore(pay.getPaymentId());
-		claimee.setClaimee_accountNumber(pay.getClaimee_accountNumber());
-
-		/*
-		 * 출금 API 호출
-		 * Input : claimee (피청구인 accessToken, 입금계좌인자내역, 출금계좌 핀테크번호, 거래금액, 요청일시[현재])
-		 * 입금 API 호출
-		 * Input : claimee (이용기관 accessToken, 입금이체용암호문구, 출금계좌인자내역, 입금계좌 핀테크번호, 임금계좌인자내역, 거래금액, 요청일시)
-		 */
-		//bankAPIService.transfer(claimee);
-
-		claimee = claimeeService.selectClaimeeAfter(pay.getPaymentId());
-		claimee.setClaimee_accountNumber(claimee.getClaimee_accountNumber());
-		claimee.setIsPaid(1);
-		claimee.setPaymentDate(new Date(System.currentTimeMillis()).toString());
-
-		claimeeService.updateClaimee(claimee);
-		
-	}
-	
-	@RequestMapping(value = "/mine", method = RequestMethod.POST)
-	public List<ClaimInfo> selectClaimListDetailByMyId(@RequestBody String myId) {
-		System.out.println("컨트롤러 도착");
-		return claimService.getClaimListDetailByMyId(myId); 
-	}
-	
-	@RequestMapping(value = "/ours", method = RequestMethod.POST)
-	public List<ClaimInfo> selectClaimListDetailByOurId(@RequestBody Ours ours) {
-		
-		HashMap<String, String> ourId = new HashMap<String, String>();
-		ourId.put("myId", ours.getMyId());
-		ourId.put("yourId", ours.getYourId());
-		
-		return claimService.getClaimListDetailByOurId(ourId); 
-	}
-	
 }

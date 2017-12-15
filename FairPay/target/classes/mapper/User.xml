@@ -26,14 +26,16 @@
 	</sql>
 
 	<update id="updateUser" parameterType="User">
-		update userInfo set password=#{password}, authorizationCode=#{authorizationCode}, accessToken=#{accessToken}
+		update userInfo
+		set password=#{password}, nickname=#{nickname},
+			authorizationCode=#{authorizationCode}, accessToken=#{accessToken},
+			userSeqNo=#{userSeqNo}, fcmId=#{fcmId}
 		where userId = #{userId} 
 	</update> 
 
 	<delete id="deleteUser" parameterType="String">
 		delete from userInfo
 		where userId=#{userId}
-
 	</delete>
 
 	<select id="selectUserById" parameterType="String" resultType="User">
@@ -45,8 +47,6 @@
 		<include refid="basicUserSql" />
 		where userSeqNo=#{userSeqNo}
 	</select>
-
-	
 	
 	<resultMap type="User" id="UserResultMap">
 		<id column="userId" property="userId" />
@@ -56,6 +56,7 @@
 		<result column="userSeqNo" property="userSeqNo" />
 		<result column="authorizationCode" property="authorizationCode" />
 		<result column="accessToken" property="accessToken" />
+		<result column="fcmId" property="fcmId" />
 	</resultMap>
 
 

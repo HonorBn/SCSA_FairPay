@@ -45,6 +45,11 @@
 			<artifactId>spring-webmvc</artifactId>
 			<version>${org.springframework-version}</version>
 		</dependency>
+		<dependency>
+			<groupId>commons-fileupload</groupId>
+			<artifactId>commons-fileupload</artifactId>
+			<version>${commons-version}</version>
+		</dependency>
 		
 		<dependency>
 			<groupId>javax.servlet</groupId>

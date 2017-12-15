@@ -3,28 +3,44 @@ package com.scsa.model.vo;
 import java.util.List;
 
 public class ClaimInfo {
+	
 	private String claimId;
 	private String claimDate;
 	private String totalPrice;
-	private String claimerId;
+	
 	private UserInfo claimer;
-	private String claimer_accountNumber;
-    private String meetingId;
+	private MeetingInfo meeting;
+	private AccountInfo account;
+	
 	private List<ClaimeeInfo> claimeeList;
 	private List<ReceiptInfo> receiptList;
 	
 	public ClaimInfo() {
 		super();
 	}
-	
-	public ClaimInfo(String claimId, String claimDate, String totalPrice, String claimerId,
-			String claimer_accountNumber, String meetingId) {
+
+	public ClaimInfo(String totalPrice, UserInfo claimer, MeetingInfo meeting, AccountInfo account,
+			List<ClaimeeInfo> claimeeList, List<ReceiptInfo> receiptList) {
+		super();
+		this.totalPrice = totalPrice;
+		this.claimer = claimer;
+		this.meeting = meeting;
+		this.account = account;
+		this.claimeeList = claimeeList;
+		this.receiptList = receiptList;
+	}
+
+	public ClaimInfo(String claimId, String claimDate, String totalPrice, UserInfo claimer, MeetingInfo meeting,
+			AccountInfo account, List<ClaimeeInfo> claimeeList, List<ReceiptInfo> receiptList) {
+		super();
 		this.claimId = claimId;
 		this.claimDate = claimDate;
 		this.totalPrice = totalPrice;
-		this.claimerId = claimerId;
-		this.claimer_accountNumber = claimer_accountNumber;
-		this.meetingId = meetingId;
+		this.claimer = claimer;
+		this.meeting = meeting;
+		this.account = account;
+		this.claimeeList = claimeeList;
+		this.receiptList = receiptList;
 	}
 
 	public String getClaimId() {
@@ -33,14 +49,6 @@ public class ClaimInfo {
 
 	public void setClaimId(String claimId) {
 		this.claimId = claimId;
-	}
-	
-	public UserInfo getClaimer() {
-		return claimer;
-	}
-
-	public void setClaimer(UserInfo claimer) {
-		this.claimer = claimer;
 	}
 
 	public String getClaimDate() {
@@ -59,28 +67,28 @@ public class ClaimInfo {
 		this.totalPrice = totalPrice;
 	}
 
-	public String getClaimerId() {
-		return claimerId;
+	public UserInfo getClaimer() {
+		return claimer;
 	}
 
-	public void setClaimerId(String claimerId) {
-		this.claimerId = claimerId;
+	public void setClaimer(UserInfo claimer) {
+		this.claimer = claimer;
 	}
 
-	public String getClaimer_accountNumber() {
-		return claimer_accountNumber;
+	public MeetingInfo getMeeting() {
+		return meeting;
 	}
 
-	public void setClaimer_accountNumber(String claimer_accountNumber) {
-		this.claimer_accountNumber = claimer_accountNumber;
+	public void setMeeting(MeetingInfo meeting) {
+		this.meeting = meeting;
 	}
 
-	public String getMeetingId() {
-		return meetingId;
+	public AccountInfo getAccount() {
+		return account;
 	}
 
-	public void setMeetingId(String meetingId) {
-		this.meetingId = meetingId;
+	public void setAccount(AccountInfo account) {
+		this.account = account;
 	}
 
 	public List<ClaimeeInfo> getClaimeeList() {
@@ -98,5 +106,12 @@ public class ClaimInfo {
 	public void setReceiptList(List<ReceiptInfo> receiptList) {
 		this.receiptList = receiptList;
 	}
+
+	@Override
+	public String toString() {
+		return "ClaimInfo [claimId=" + claimId + ", claimDate=" + claimDate + ", totalPrice=" + totalPrice
+				+ ", claimer=" + claimer + ", meeting=" + meeting + ", account=" + account + ", claimeeList="
+				+ claimeeList + ", receiptList=" + receiptList + "]";
+	}
 	
-}
+}	

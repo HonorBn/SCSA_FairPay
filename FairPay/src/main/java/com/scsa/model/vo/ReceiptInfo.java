@@ -1,6 +1,7 @@
 package com.scsa.model.vo;
 
 public class ReceiptInfo {
+	
 	private String receiptId;
 	private String receiptImg;
 	private String claimId;
@@ -9,13 +10,11 @@ public class ReceiptInfo {
 		super();
 	}
 
-
 	public ReceiptInfo(String receiptImg, String claimId) {
 		super();
 		this.receiptImg = receiptImg;
 		this.claimId = claimId;
 	}
-
 
 	public ReceiptInfo(String receiptId, String receiptImg, String claimId) {
 		super();

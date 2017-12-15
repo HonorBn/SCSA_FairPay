@@ -33,19 +33,14 @@ public class ReceiptController {
 		this.receiptService = receiptService;
 	}
 
-	@RequestMapping(value="/image/register.do", method=RequestMethod.POST)
+	@RequestMapping(value="/image/register", method=RequestMethod.POST)
 	public String upload(Model model, @RequestParam String message, 
 			@RequestParam("file") MultipartFile image) throws IllegalStateException, IOException{
-		
-		// 서버에 저장할 물리적인 주소를 얻어야 함, ServletContext는 request를 통해서 얻을 수 있음(바로 못받아서)
+		System.out.println("이미지 업로드 요청 발생 : "+image.getOriginalFilename());
 		String saveDir = servletContext.getRealPath("/images");
-		
-		// 내용 기록은 스트림으로 해야 함
 		File file = new File(saveDir+"/"+image.getOriginalFilename());
 		
-		// 파일이름이 동일하면 엎어버림
 		if(!file.exists()){
-		// MultipartFile 객체 안의 이미지를 읽어서 파일로 write(파일입출력) 
 			image.transferTo(file);
 			model.addAttribute("fileName",image.getOriginalFilename());
 			model.addAttribute("message", message);
@@ -57,6 +52,7 @@ public class ReceiptController {
 		return "confirm";
 	}
 	
+
 	// 청구별 영수증 전체 목록 조회
 	@RequestMapping(value = "/receipt_list.do")
 	public String receipt_list_by_claimId(Model model, String claimId) {

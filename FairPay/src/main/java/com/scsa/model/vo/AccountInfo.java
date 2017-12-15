@@ -7,13 +7,14 @@ public class AccountInfo {
 	private String userId;
 	private String accountAlias;
 	
-	
-	
 	public AccountInfo() {
 		super();
 	}
 	
-	
+	public AccountInfo(String accountNumber) {
+		super();
+		this.accountNumber = accountNumber;
+	}
 
 	public AccountInfo(String accountNumber, String userId) {
 		super();
@@ -21,14 +22,13 @@ public class AccountInfo {
 		this.userId = userId;
 	}
 
-
-
 	public AccountInfo(String accountNumber, String bankCode, String userId) {
 		super();
 		this.accountNumber = accountNumber;
 		this.bankCode = bankCode;
 		this.userId = userId;
 	}
+	
 	public AccountInfo(String accountNumber, String bankCode, String userId,String accountAlias) {
 		super();
 		this.accountNumber = accountNumber;
@@ -61,8 +61,6 @@ public class AccountInfo {
 		this.userId = userId;
 	}
 
-	
-
 	public String getAccountAlias() {
 		return accountAlias;
 	}
@@ -85,7 +83,4 @@ public class AccountInfo {
 		builder.append("]");
 		return builder.toString();
 	}
-	
-	
-	
 }

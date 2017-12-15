@@ -4,59 +4,30 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
   
 <mapper namespace="claimee">
-
-<!-- 	<insert id="insertClaimee" parameterType="Claimee">
-		insert into
-		claimeeInfo(paymentId, isPaid, tran_amt, claimId, claimeeId)
-		values(#{paymentId}, #{isPaid}, #{tran_amt}, #{claimId}, #{claimeeId})
-		<selectKey order="BEFORE" keyProperty="paymentId" resultType="string">
-			select payerId_seq.nextval from dual
-		</selectKey>
-	</insert> -->
+	
 	<insert id="insertClaimee" parameterType="Claimee">
 		insert into
 		claimeeInfo(paymentId, isPaid, tran_amt, claimId, claimeeId)
-		values(#{paymentId}, #{isPaid}, #{tran_amt}, #{claimId}, #{claimeeId})
+		values(#{paymentId}, #{isPaid}, #{tran_amt}, #{claimId}, #{claimee.userId})
 		<selectKey order="BEFORE" keyProperty="paymentId" resultType="string">
 			select payerId_seq.nextval from dual
 		</selectKey>
 	</insert>
 	
 	<update id="updateClaimee" parameterType="Claimee"> 
-		update claimeeInfo set paymentDate=#{paymentDate} ,isPaid=#{isPaid} ,claimee_accountNumber=#{claimee_accountNumber}
-		where claimeeId=#{claimeeId} 
+		update claimeeInfo
+		set paymentDate = #{paymentDate}, isPaid = #{isPaid}, claimee_accountNumber = #{account.accountNumber}
+		where claimeeId = #{claimee.userId} 
 	</update> 
 
-	<delete id="deleteUser" parameterType="String">
+	<delete id="deleteClaimee" parameterType="String">
 		delete from claimeeInfo
-		where paymentId=#{paymentId} 
+		where paymentId = #{paymentId} 
 	</delete>
-	
-	<resultMap type="Claimee" id="ClaimeeAccount">
-		<id column="paymentId" property="paymentId" />
-		<result column="paymentDate" property="paymentDate" />
-		<result column="isPaid" property="isPaid" />
-		<result column="tran_amt" property="tran_amt" />
-		<result column="claimId" property="claimId" />
-		<result column="claimeeId" property="claimeeId" />
-		<result column="claimee_accountNumber" property="claimee_accountNumber" />
-		<result column="userName" property="userName" />
-		<result column="accessToken" property="accessToken" />
-		<result column="claimer_accountNumber" property="claim_accountNumber" />
-	</resultMap>
-	
-	<select id="selectClaimeeBefore" parameterType="String" resultMap="ClaimeeAccount">
-		select	e.paymentId, e.paymentDate, e.isPaid, e.tran_amt,
-				e.claimId, e.claimeeId, u.userName, u.accessToken, c.claimer_accountNumber
-		from	ClaimInfo c, ClaimeeInfo e, UserInfo u
-		where	c.claimId = e.claimId
-		and		paymentId = #{paymentId}
-		and		e.claimeeId = u.userId
-	</select>
-	
-	<select id="selectClaimeeAfter" parameterType="String" resultType="Claimee">
+
+	<select id="selectClaimeeByPaymentId" parameterType="String" resultMap="claim.ClaimDetailResultMap">
 		select	*
-		from	ClaimeeInfo
+		from	claimview
 		where	paymentId = #{paymentId}
 	</select>
 		
