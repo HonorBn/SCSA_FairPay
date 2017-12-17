@@ -1,6 +1,8 @@
 package com.scsa.controller;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.scsa.data.Pay;
 import com.scsa.model.service.FriendsService;
 import com.scsa.model.vo.FriendsInfo;
 import com.scsa.model.vo.FriendsList;
@@ -93,15 +97,11 @@ public class FriendsController {
 
 	// 즐겨찾는 친구 해제
 	@RequestMapping(value = "/delete_favorite_friend.do")
-	public String delete_favorite_friend(Model model, @RequestParam(name = "userId") String userId,
-			@RequestParam(name = "friendId") String friendId) {
-		boolean result = friendsService.removeFavoriteFriend(userId, friendId);
-		if (result) {
-			model.addAttribute("msg", "친구 즐찾 해제 성공하였습니다");
-		} else {
-			model.addAttribute("msg", "친구 즐찾 해제 실패하였습니다");
-		}
-		model.addAttribute("userId", userId);
-		return "favorite_friends_list_by_Id";
+	public String delete_favorite_friend(@RequestBody Map<String, String> ourId) {
+		boolean result = friendsService.removeFavoriteFriend(ourId.get("myId"), ourId.get("yourId"));
+		String msg;
+		if (result) msg = "친구 즐찾 해제 성공하였습니다";
+		else msg = "친구 즐찾 해제 실패하였습니다";
+		return msg;
 	}
 }
