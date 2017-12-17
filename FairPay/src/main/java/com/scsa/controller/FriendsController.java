@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scsa.data.Ours;
 import com.scsa.model.service.FriendsService;
 import com.scsa.model.vo.FriendsInfo;
 import com.scsa.model.vo.FriendsList;
@@ -60,17 +61,15 @@ public class FriendsController {
 	}
 
 	// 친구 삭제  : 보류
-	@RequestMapping(value = "/delete_friend.do")
-	public String delete_friend(Model model, @RequestParam(name = "userId") String userId,
-			@RequestParam(name = "friendId") String friendId) {
-		boolean result = friendsService.removeFriend(userId, friendId);
-		if (result) {
-			model.addAttribute("msg", "친구 삭제 성공하였습니다");
-		} else {
-			model.addAttribute("msg", "친구 삭제 실패하였습니다");
-		}
-		model.addAttribute("userId", userId);
-		return "friends_list_by_id";
+	@RequestMapping(value = "/delete_friend", method = RequestMethod.DELETE)
+	public String delete_friend(@RequestBody Ours ours) {
+		boolean result = friendsService.removeFriend(ours.getMyId(), ours.getYourId());
+		
+		String msg = null;
+		if (result) msg = "친구 삭제 성공하였습니다";
+		else msg = "친구 삭제 실패하였습니다";
+		
+		return msg;
 	}
 
 	// 아이디로 즐겨찾는 친구 목록 조회
