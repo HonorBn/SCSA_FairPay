@@ -27,4 +27,11 @@ public class Ours {
     public void setYourId(String yourId) {
         this.yourId = yourId;
     }
+
+	@Override
+	public String toString() {
+		return "Ours [myId=" + myId + ", yourId=" + yourId + "]";
+	}
+    
+    
 }
