@@ -1,7 +1,6 @@
 package com.scsa.controller;
 
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -12,10 +11,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.scsa.data.Pay;
 import com.scsa.model.service.FriendsService;
 import com.scsa.model.vo.FriendsInfo;
 import com.scsa.model.vo.FriendsList;
+import com.scsa.model.vo.MeetingInfo;
+import com.scsa.model.vo.MeetingList;
 import com.scsa.model.vo.UserInfo;
 
 @RestController
@@ -74,8 +74,8 @@ public class FriendsController {
 	}
 
 	// 아이디로 즐겨찾는 친구 목록 조회
-	@RequestMapping(value = "/favorite_friends_list_by_Id.do")
-	public String favorite_friends_list_by_Id(Model model, String userId) {
+	@RequestMapping(value = "/favorite_friends_list_by_Id.do/{userId}")
+	public String favorite_friends_list_by_Id(Model model,@PathVariable String userId) {
 		List<UserInfo> list = friendsService.getFavoriteFriendsById(userId);
 		model.addAttribute("list", list);
 		return "favorite_friends_list_by_Id";
@@ -97,11 +97,15 @@ public class FriendsController {
 
 	// 즐겨찾는 친구 해제
 	@RequestMapping(value = "/delete_favorite_friend.do")
-	public String delete_favorite_friend(@RequestBody Map<String, String> ourId) {
-		boolean result = friendsService.removeFavoriteFriend(ourId.get("myId"), ourId.get("yourId"));
-		String msg;
-		if (result) msg = "친구 즐찾 해제 성공하였습니다";
-		else msg = "친구 즐찾 해제 실패하였습니다";
-		return msg;
+	public String delete_favorite_friend(Model model, @RequestParam(name = "userId") String userId,
+			@RequestParam(name = "friendId") String friendId) {
+		boolean result = friendsService.removeFavoriteFriend(userId, friendId);
+		if (result) {
+			model.addAttribute("msg", "친구 즐찾 해제 성공하였습니다");
+		} else {
+			model.addAttribute("msg", "친구 즐찾 해제 실패하였습니다");
+		}
+		model.addAttribute("userId", userId);
+		return "favorite_friends_list_by_Id";
 	}
 }
