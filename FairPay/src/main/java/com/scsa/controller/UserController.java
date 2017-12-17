@@ -43,7 +43,8 @@ public class UserController {
 
 	//아이디로 유저 가져오기
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-	public UserInfo getUserById(Model model,@PathVariable String userId) {
+	public UserInfo getUserById(Model model, @PathVariable String userId) {
+		System.out.println("도착");
 		return userService.getUserById(userId);
 	}
 	
@@ -55,14 +56,17 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public String login(@RequestBody UserInfo user) {
-		
+		System.out.println("컨트롤러");
 		// ID, PW 일치 확인
-		UserInfo checkedUser = userService.getUserById(user.getUserId());
-		if (checkedUser == null) return "존재하지 않는 사용자입니다";
+		UserInfo checkedUser = userService.login(user);
 		
-		// Token 갱신
-		userService.updateToken(user);
-		return checkedUser.getUsername() + "님 로그인되었습니다";
+		String result;
+		if (checkedUser == null) result = "0";
+		else {
+			userService.updateToken(user);	// Token 갱신
+			result = checkedUser.getUsername();
+		}
+		return result;
 	}
 	
 	/*	@RequestMapping(value = "/user/{userSeqNo}", method = RequestMethod.GET)
