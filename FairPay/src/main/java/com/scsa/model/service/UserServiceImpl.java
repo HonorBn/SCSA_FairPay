@@ -12,9 +12,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean login(UserInfo user) {
-		
 		return userDao.login(user);
-
 	}
 	
 	public boolean updateToken(UserInfo user) {
@@ -31,7 +29,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public boolean updateUser(UserInfo user) {
-
 		return userDao.updateUser(user);
 	}
 
@@ -42,6 +39,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserInfo getUserByUserSeqNo(String userSeqNo) {
 		return userDao.selectUserByUserSeqNo(userSeqNo);
+	}
+
+	@Override
+	public UserInfo getUserWithAccountListById(String userId) {
+		return userDao.selectUserWithAccountListById(userId);
 	}
 
 }

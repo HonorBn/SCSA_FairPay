@@ -1,5 +1,7 @@
 package com.scsa.model.vo;
 
+import java.util.List;
+
 public class UserInfo {
 	
 	private String userId;
@@ -11,6 +13,7 @@ public class UserInfo {
 	private String accessToken;
 	private String fcmId;
 	
+	private List<AccountInfo> accountList;
 	
 	public UserInfo() {
 		super();
@@ -122,6 +125,16 @@ public class UserInfo {
 
 	public void setFcmId(String fcmId) {
 		this.fcmId = fcmId;
+	}
+	
+	
+
+	public List<AccountInfo> getAccountList() {
+		return accountList;
+	}
+
+	public void setAccountList(List<AccountInfo> accountList) {
+		this.accountList = accountList;
 	}
 
 	@Override

@@ -11,5 +11,6 @@ public interface UserService {
 	boolean updateUser(UserInfo user);
 	UserInfo getUserById(String userId);
 	UserInfo getUserByUserSeqNo(String userSeqNo);
+	UserInfo getUserWithAccountListById(String userId);
 	
 }

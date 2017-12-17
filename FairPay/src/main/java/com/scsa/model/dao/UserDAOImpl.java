@@ -51,7 +51,6 @@ public class UserDAOImpl implements UserDAO {
 		
 	}
 
-
 	@Override
 	public UserInfo selectUserById(String userId) {
 		return sqlSession.selectOne("user.selectUserById", userId);
@@ -62,4 +61,8 @@ public class UserDAOImpl implements UserDAO {
 		return sqlSession.selectOne("user.selectUserBySeqNo", userSeqNo);
 	}
 
+	@Override
+	public UserInfo selectUserWithAccountListById(String userId) {
+		return sqlSession.selectOne("user.selectUserWithAccountListById", userId);
+	}
 }
