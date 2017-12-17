@@ -73,7 +73,7 @@ public class FriendsController {
 	}
 
 	// 아이디로 즐겨찾는 친구 목록 조회
-	@RequestMapping(value = "/favorite_friends_list_by_Id.do/{userId}")
+	@RequestMapping(value = "/favorite_friends_list_by_Id.do/{userId}", method = RequestMethod.GET)
 	public FriendsList favorite_friends_list_by_Id(@PathVariable String userId) {
 		System.out.println("아이디로 즐겨찾는 친구목록 조회 요청 발생 userId : " + userId);
 	
