@@ -33,17 +33,15 @@ public class ReceiptController {
 		this.receiptService = receiptService;
 	}
 
-	@RequestMapping(value="/image/register", method=RequestMethod.POST)
-	public String upload(Model model, @RequestParam String message, 
-			@RequestParam("file") MultipartFile image) throws IllegalStateException, IOException{
+	@RequestMapping(value="/image/springrest/register", method=RequestMethod.POST)
+	public String upload(@RequestParam("file") MultipartFile image) throws IllegalStateException, IOException{
 		System.out.println("이미지 업로드 요청 발생 : "+image.getOriginalFilename());
 		String saveDir = servletContext.getRealPath("/images");
 		File file = new File(saveDir+"/"+image.getOriginalFilename());
 		
 		if(!file.exists()){
 			image.transferTo(file);
-			model.addAttribute("fileName",image.getOriginalFilename());
-			model.addAttribute("message", message);
+		//	model.addAttribute("fileName",image.getOriginalFilename());
 		} else {
 			// file rename 알고리즘 구현할 것, 그 후 transfer..
 			System.out.println("같은 이름의 파일이 이미 존재함!");
