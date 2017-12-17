@@ -75,11 +75,15 @@ public class FriendsController {
 
 	// 아이디로 즐겨찾는 친구 목록 조회
 	@RequestMapping(value = "/favorite_friends_list_by_Id.do/{userId}")
-	public String favorite_friends_list_by_Id(Model model,@PathVariable String userId) {
-		List<UserInfo> list = friendsService.getFavoriteFriendsById(userId);
-		model.addAttribute("list", list);
-		return "favorite_friends_list_by_Id";
+	public FriendsList favorite_friends_list_by_Id(@PathVariable String userId) {
+		System.out.println("아이디로 즐겨찾는 친구목록 조회 요청 발생 userId : " + userId);
+	
+		FriendsList friendsList = new FriendsList();
+		friendsList.setFriendsList(friendsService.getFavoriteFriendsById(userId));
+		return friendsList;
 	}
+	
+	
 
 	// 즐겨찾는 친구 등록
 	@RequestMapping(value = "/add_favorite_friend.do")
