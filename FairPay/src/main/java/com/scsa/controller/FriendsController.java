@@ -65,6 +65,8 @@ public class FriendsController {
 	public String delete_friend(@RequestBody Ours ours) {
 		boolean result = friendsService.removeFriend(ours.getMyId(), ours.getYourId());
 		
+		System.out.println(ours.toString());
+		
 		String msg = null;
 		if (result) msg = "친구 삭제 성공하였습니다";
 		else msg = "친구 삭제 실패하였습니다";
