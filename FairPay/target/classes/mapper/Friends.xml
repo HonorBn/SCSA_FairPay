@@ -46,7 +46,7 @@
 		#{username}
 	</select>
 
-	<select id="selectFavoriteFriendsById" resultMap="FriendsResultMap"
+	<select id="selectFavoriteFriendsById" resultMap="FriendsUserResultMap"
 		parameterType="String">
 		select friendId
 		from friendsInfo 
@@ -54,7 +54,7 @@
 		and isFavorite = '1'
 	</select>
 	
-	<select id="selectFavoriteFriendsListByName" resultMap="FriendsResultMap"
+	<select id="selectFavoriteFriendsListByName" resultMap="FriendsUserResultMap"
 		parameterType="String">
 		select f.friendId
 		from friendsInfo f, userInfo u
