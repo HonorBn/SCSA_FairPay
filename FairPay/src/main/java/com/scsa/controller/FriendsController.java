@@ -61,7 +61,7 @@ public class FriendsController {
 	}
 
 	// 친구 삭제  : 보류
-	@RequestMapping(value = "/delete_friend", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/delete_friend", method = RequestMethod.POST)
 	public String delete_friend(@RequestBody Ours ours) {
 		boolean result = friendsService.removeFriend(ours.getMyId(), ours.getYourId());
 		

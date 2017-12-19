@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scsa.model.service.BankAPIService;
 import com.scsa.model.service.UserService;
 import com.scsa.model.vo.UserInfo;
 
@@ -23,10 +24,17 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BankAPIService bankAPIService;
+
 
 	// 사용자추가
 	@RequestMapping(value = "/user", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public String addUser(@RequestBody UserInfo user) {
+		System.out.println("addUser 도착");
+		// auth 정보로 다른 정보 가져오기
+		UserInfo userDetail = bankAPIService.getUserInfo(user);
+		
 		
 		String message;
 		if (userService.addUser(user)) message="등록에 성공하였습니다";
@@ -44,7 +52,6 @@ public class UserController {
 	//아이디로 유저 가져오기
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
 	public UserInfo getUserById(Model model, @PathVariable String userId) {
-		System.out.println("도착");
 		return userService.getUserById(userId);
 	}
 	
@@ -61,10 +68,10 @@ public class UserController {
 		UserInfo checkedUser = userService.login(user);
 		
 		String result;
-		if (checkedUser == null) result = "0";
+		if (checkedUser == null) result = null;
 		else {
 			userService.updateToken(user);	// Token 갱신
-			result = checkedUser.getUsername();
+			result = checkedUser.getUserId();
 		}
 		return result;
 	}
