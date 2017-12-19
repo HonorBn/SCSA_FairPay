@@ -5,22 +5,39 @@ public class ReceiptInfo {
 	private String receiptId;
 	private String receiptImg;
 	private String claimId;
+	private String isClaim;
 	
 	public ReceiptInfo() {
 		super();
 	}
 
-	public ReceiptInfo(String receiptImg, String claimId) {
+	public ReceiptInfo(String claimId, String isClaim) {
+		super();
+		this.claimId = claimId;
+		this.isClaim = isClaim;
+	}
+
+	public ReceiptInfo(String receiptImg, String claimId, String isClaim) {
 		super();
 		this.receiptImg = receiptImg;
 		this.claimId = claimId;
+		this.isClaim = isClaim;
 	}
 
-	public ReceiptInfo(String receiptId, String receiptImg, String claimId) {
+	public ReceiptInfo(String receiptId, String receiptImg, String claimId, String isClaim) {
 		super();
 		this.receiptId = receiptId;
 		this.receiptImg = receiptImg;
 		this.claimId = claimId;
+		this.isClaim = isClaim;
+	}
+
+	public String getIsClaim() {
+		return isClaim;
+	}
+
+	public void setIsClaim(String isClaim) {
+		this.isClaim = isClaim;
 	}
 
 	public String getReceiptId() {
@@ -54,7 +71,17 @@ public class ReceiptInfo {
 
 	@Override
 	public String toString() {
-		return "ReceiptInfo [receiptId=" + receiptId + ", receiptImg=" + receiptImg + ", claimId=" + claimId + "]";
+		StringBuilder builder = new StringBuilder();
+		builder.append("ReceiptInfo [getIsClaim()=");
+		builder.append(getIsClaim());
+		builder.append(", getReceiptId()=");
+		builder.append(getReceiptId());
+		builder.append(", getReceiptImg()=");
+		builder.append(getReceiptImg());
+		builder.append(", getClaimId()=");
+		builder.append(getClaimId());
+		builder.append("]");
+		return builder.toString();
 	}
-	
+
 }

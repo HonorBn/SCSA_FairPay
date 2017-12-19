@@ -8,9 +8,9 @@
 	<insert id="insertReceipt" parameterType="Receipt">
 		insert into
 		receiptInfo
-		(receiptId, receiptImg, claimId)
+		(receiptId, receiptImg, claimId, isClaim)
 		values
-		(receiptId_seq.nextval, #{receiptImg}, #{claimId})
+		(receiptId_seq.nextval, #{receiptImg}, #{claimId}, #{isClaim})
 	</insert>
 
 	<delete id="deleteReceipt" parameterType="String">
@@ -24,28 +24,23 @@
 		select
 		receiptId,
 		receiptImg,
-		claimId
+		claimId,
+		isClaim
 		from receiptInfo
 	</sql>
 
-	<select id="selectReceiptById" resultMap="ReceiptResultMap"
+	<select id="selectReceiptById" resultType="Receipt"
 		parameterType="String">
 		<include refid="basicReceiptSql"></include>
 		where receiptId = #{receiptId}
 	</select>
 
-	<select id="selectReceiptList" resultMap="ReceiptResultMap"
+	<select id="selectReceiptList" resultType="Receipt"
 		parameterType="String">
 		<include refid="basicReceiptSql"></include>
 		where claimId = #{claimId}
 	</select>
 
 
-	<!-- column 은 select 절에서 column 명 property 는 vo에 맵핑된 이름 -->
-	<resultMap type="Receipt" id="ReceiptResultMap">
-		<id column="receiptId" property="receiptId" />
-		<result column="receiptImg" property="receiptImg" />
-		<result column="claimId" property="claimId" />
-	</resultMap>
 
 </mapper>
