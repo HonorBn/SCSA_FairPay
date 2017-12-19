@@ -41,7 +41,7 @@ public class FriendsController {
 	// 이름으로 친구 목록 조회  : 보류
 	@RequestMapping(value = "/friends/list/name/{username}")
 	public FriendsList getFriendsByUsername(@PathVariable String username) {
-		System.out.println("아이디로 친구목록 조회 요청 발생 userId : " + username);
+		System.out.println("이름으로 친구목록 조회 요청 발생 userId : " + username);
 		FriendsList friendsList = new FriendsList();
 		friendsList.setFriendsList(friendsService.getFriendsByName(username));
 		return friendsList;
@@ -65,7 +65,7 @@ public class FriendsController {
 	public String delete_friend(@RequestBody Ours ours) {
 		boolean result = friendsService.removeFriend(ours.getMyId(), ours.getYourId());
 		
-		System.out.println(ours.toString());
+		System.out.println("친구 요청 발생 : " + ours.toString());
 		
 		String msg = null;
 		if (result) msg = "친구 삭제 성공하였습니다";
@@ -78,7 +78,6 @@ public class FriendsController {
 	@RequestMapping(value = "/favorite_friends_list_by_Id.do/{userId}", method = RequestMethod.GET)
 	public FriendsList favorite_friends_list_by_Id(@PathVariable String userId) {
 		System.out.println("아이디로 즐겨찾는 친구목록 조회 요청 발생 userId : " + userId);
-	
 		FriendsList friendsList = new FriendsList();
 		friendsList.setFriendsList(friendsService.getFavoriteFriendsById(userId));
 		return friendsList;
