@@ -18,6 +18,8 @@ import com.scsa.model.vo.UserInfo;
 public class BankAPIService {
 	
 	final String NAME = "안영빈";		// 이용기관 대표자
+	final String clientId = "l7xx1a592643436f43169b078251f7258c59";
+	final String clientSecret = "66acb1f6756f4a348fac9c59412d6d11";
 	final String AUTHORIZATION = "61d5e4f7-9e2c-40c1-8746-934c9825b06a";	// 이용기관 Access Token
 	String url = "https://testapi.open-platform.or.kr";
 	
@@ -104,5 +106,31 @@ public class BankAPIService {
 	
 	private String getTime() {
 		return new SimpleDateFormat("yyyyMMddhhmmss").format(new Date()).toString();
+	}
+	
+	public UserInfo getUserInfo(UserInfo user) {
+		
+		String code = user.getAuthorizationCode();
+		String grant_type = "authorization_code";
+		
+		System.out.println(code);
+		
+		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+		
+		// 파라미터 설정
+		Map req_payload = new HashMap();
+		req_payload.put("code", code);
+		req_payload.put("client_id", clientId);
+		req_payload.put("client_secret", clientSecret);
+		req_payload.put("redirect_uri", "http://70.12.109.163:9090/project/join.jsp");
+		req_payload.put("grant_type", grant_type);
+		
+		// 데이터 설정
+		String uri = url + "/oauth/2.0/token";
+		HttpEntity<Map> request = new HttpEntity<Map>(req_payload, headers);
+		
+		System.out.println(new RestTemplate().postForObject(uri, request, Map.class).toString());
+		
+		return user;
 	}
 }

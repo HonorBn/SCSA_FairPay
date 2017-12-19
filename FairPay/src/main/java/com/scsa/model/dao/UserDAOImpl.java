@@ -11,20 +11,16 @@ public class UserDAOImpl implements UserDAO {
 		this.sqlSession = sqlSession;
 	}
 
-	public boolean login(UserInfo user) {
-		Integer flag = sqlSession.selectOne("user.login", user);
-		if(flag==null){
-			return false;
-		}else{
-			return true;
-		}
+	public UserInfo login(UserInfo user) {
+		System.out.println(user.getUserId());
+		System.out.println(user.getPassword());
+		UserInfo u = sqlSession.selectOne("user.login", user);
+		System.out.println(u == null);
+		return u;
 	}
 	
 	public boolean updateToken(UserInfo user) {
-		System.out.println("µµÂø");
-		int a = sqlSession.update("user.updateToken", user);
-		System.out.println(a);
-		return a > 0;
+		return sqlSession.update("user.updateToken", user) > 0;
 	}
 	
 	public boolean logout() {//º¸·ù

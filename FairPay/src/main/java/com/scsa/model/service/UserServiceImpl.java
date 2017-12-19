@@ -11,7 +11,7 @@ public class UserServiceImpl implements UserService {
 		this.userDao = userDao;
 	}
 
-	public boolean login(UserInfo user) {
+	public UserInfo login(UserInfo user) {
 		return userDao.login(user);
 	}
 	

@@ -3,7 +3,7 @@ package com.scsa.model.dao;
 import com.scsa.model.vo.UserInfo;
 
 public interface UserDAO {
-	boolean login(UserInfo user);
+	UserInfo login(UserInfo user);
 	boolean updateToken(UserInfo user);
 	boolean logout();
 	boolean insertUser(UserInfo user);

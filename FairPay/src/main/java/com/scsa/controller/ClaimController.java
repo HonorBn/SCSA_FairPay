@@ -115,7 +115,7 @@ public class ClaimController {
 	@RequestMapping(value = "/mine", method = RequestMethod.POST)
 	public List<ClaimInfo> selectClaimListDetailByMyId(@RequestBody String myId) {
 		
-		System.out.println("내 아이디" + myId);
+		System.out.println("내 아이디로 청구 피청구 리스트 조회 : " + myId);
 		List<ClaimInfo> claimList = claimService.getClaimListDetailByMyId(myId);
 		
 		System.out.println(claimList.get(0).toString());

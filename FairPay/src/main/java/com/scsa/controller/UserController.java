@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.scsa.model.service.BankAPIService;
 import com.scsa.model.service.UserService;
 import com.scsa.model.vo.UserInfo;
 
@@ -23,10 +24,17 @@ public class UserController {
 	
 	@Autowired
 	private UserService userService;
+	@Autowired
+	private BankAPIService bankAPIService;
+
 
 	// 사용자추가
 	@RequestMapping(value = "/user", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public String addUser(@RequestBody UserInfo user) {
+		System.out.println("addUser 도착");
+		// auth 정보로 다른 정보 가져오기
+		UserInfo userDetail = bankAPIService.getUserInfo(user);
+		
 		
 		String message;
 		if (userService.addUser(user)) message="등록에 성공하였습니다";
@@ -43,7 +51,7 @@ public class UserController {
 
 	//아이디로 유저 가져오기
 	@RequestMapping(value = "/user/{userId}", method = RequestMethod.GET)
-	public UserInfo getUserById(Model model,@PathVariable String userId) {
+	public UserInfo getUserById(Model model, @PathVariable String userId) {
 		return userService.getUserById(userId);
 	}
 	
@@ -55,14 +63,17 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST, produces = "text/plain;charset=utf-8")
 	public String login(@RequestBody UserInfo user) {
-		
+		System.out.println("컨트롤러");
 		// ID, PW 일치 확인
-		UserInfo checkedUser = userService.getUserById(user.getUserId());
-		if (checkedUser == null) return "존재하지 않는 사용자입니다";
+		UserInfo checkedUser = userService.login(user);
 		
-		// Token 갱신
-		userService.updateToken(user);
-		return checkedUser.getUsername() + "님 로그인되었습니다";
+		String result;
+		if (checkedUser == null) result = null;
+		else {
+			userService.updateToken(user);	// Token 갱신
+			result = checkedUser.getUserId();
+		}
+		return result;
 	}
 	
 	/*	@RequestMapping(value = "/user/{userSeqNo}", method = RequestMethod.GET)
