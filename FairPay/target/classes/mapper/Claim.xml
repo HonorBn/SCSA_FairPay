@@ -49,6 +49,7 @@
 		
 		<association property="account" javaType="Account">
 			<id column="cAnum" property="accountNumber" />
+			<result column="cUid" property="userId" />
 			<result column="cBcode" property="bankCode" />
 			<result column="cAalias" property="accountAlias" />
 		</association>
@@ -71,6 +72,7 @@
 			
 			<association property="account" javaType="Account">
 				<id column="eAnum" property="accountNumber" />
+				<result column="eUid" property="userId" />
 				<result column="eBcode" property="bankCode" />
 				<result column="eAalias" property="accountAlias" />
 			</association>

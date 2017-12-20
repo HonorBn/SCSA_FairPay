@@ -23,64 +23,69 @@ public class BankAPIService {
 	final String AUTHORIZATION = "61d5e4f7-9e2c-40c1-8746-934c9825b06a";	// 이용기관 Access Token
 	String url = "https://testapi.open-platform.or.kr";
 	
-	public void transfer(ClaimInfo claim) {
+	public void transfer(List<ClaimInfo> claimList) {
 		
-		withdraw(claim);
-		deposit(claim);
+		withdraw(claimList);
+		deposit(claimList);
 		
 	}
 	
 	
-	private void withdraw(ClaimInfo claim) {
+	private void withdraw(List<ClaimInfo> claimList) {
 		
-		ClaimeeInfo claimeeInfo = claim.getClaimeeList().get(0);
-		UserInfo claimee = claimeeInfo.getClaimee();
-		
-		String Authorization = claimee.getAccessToken();
-		
-		String dps_print_content = 	claimee.getUsername();	// 입금계좌인자내역
-		String fintech_use_num = claimeeInfo.getAccount().getAccountNumber();
-		int tran_amt = claimeeInfo.getTran_amt();
-		long tran_dtime = Long.parseLong(getTime());
-		
-		// 헤더 설정
-		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
-		Map<String, String> map = new HashMap<String, String>();
-		map.put("Authorization", "Bearer " + Authorization);
-		headers.setAll(map);
-		
-		// 파라미터 설정
-		Map req_payload = new HashMap();
-		req_payload.put("dps_print_content", dps_print_content);
-		req_payload.put("fintech_use_num", fintech_use_num);
-		req_payload.put("tran_amt", tran_amt);
-		req_payload.put("tran_dtime", tran_dtime);
-		
-		// 헤더, 파라미터 입력
-		String uri = url + "/v1.0/transfer/withdraw";
-		HttpEntity<Map> request = new HttpEntity<Map>(req_payload, headers);
-		
-		new RestTemplate().postForObject(uri, request, Map.class);
+		for (ClaimInfo claim : claimList) {
+			
+			ClaimeeInfo claimeeInfo = claim.getClaimeeList().get(0);
+			UserInfo claimee = claimeeInfo.getClaimee();
+			
+			String Authorization = claimee.getAccessToken();
+			
+			String dps_print_content = 	claimee.getUsername();	// 입금계좌인자내역
+			String fintech_use_num = claimeeInfo.getAccount().getAccountNumber();
+			int tran_amt = claimeeInfo.getTran_amt();
+			long tran_dtime = Long.parseLong(getTime());
+			
+			// 헤더 설정
+			MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();
+			Map<String, String> map = new HashMap<String, String>();
+			map.put("Authorization", "Bearer " + Authorization);
+			headers.setAll(map);
+			
+			// 파라미터 설정
+			Map req_payload = new HashMap();
+			req_payload.put("dps_print_content", dps_print_content);
+			req_payload.put("fintech_use_num", fintech_use_num);
+			req_payload.put("tran_amt", tran_amt);
+			req_payload.put("tran_dtime", tran_dtime);
+			
+			// 헤더, 파라미터 입력
+			String uri = url + "/v1.0/transfer/withdraw";
+			HttpEntity<Map> request = new HttpEntity<Map>(req_payload, headers);
+			
+			new RestTemplate().postForObject(uri, request, Map.class);
+		}
 	}
 	
-	private void deposit(ClaimInfo claim) {
-		
-		ClaimeeInfo claimeeInfo = claim.getClaimeeList().get(0);
+	private void deposit(List<ClaimInfo> claimList) {
 		
 		String Authorization = AUTHORIZATION;
 		String wd_print_content = NAME;	// 이용기관 대표자 이름
 		String wd_pass_phrase = "NONE"; // 입금 이체용 암호문구
-		String req_cnt = "1";
-		int tran_amt = claimeeInfo.getTran_amt();
 		long tran_dtime = Long.parseLong(getTime());
 		
+		String req_cnt = claimList.size()+"";
 		List<Map> req_list = new ArrayList<Map>();
-		Map list = new HashMap();
-		list.put("tran_no", "1");
-		list.put("fintech_use_num", claim.getAccount().getAccountNumber());
-		list.put("print_content", claimeeInfo.getClaimee().getUsername());
-		list.put("tran_amt", tran_amt);
-		req_list.add(list);
+		
+		for (ClaimInfo claim : claimList) {
+			
+			ClaimeeInfo claimee = claim.getClaimeeList().get(0);
+			Map item = new HashMap();
+			item.put("tran_no", "1");
+			item.put("fintech_use_num", claim.getAccount().getAccountNumber());
+			item.put("print_content", claimee.getClaimee().getUsername());
+			item.put("tran_amt", claimee.getTran_amt());
+			req_list.add(item);
+		}
 		
 		// 헤더 설정
 		MultiValueMap<String, String> headers = new LinkedMultiValueMap<String, String>();

@@ -69,9 +69,7 @@
 			</tr>
 		</table>
 		
-		<div align="center" style="overflow: hidden;">
 		<div align="center">
-			<div style="font: sans-serif; float: left">
 				<input type="button" id="loginBtn" value="Log In" style=	"height: 35px;
 																		 width: 100px;
 																		 font-family: 'Tahoma';
@@ -79,8 +77,9 @@
 																		 border-style: solid;
 																		 margin-right: 10px;
 																		 background-color: white;"/>
-			</div>
-			<div style="float: left">
+		</div>
+		
+<!-- 			<div style="float: left">
 				<form id="signup" method="get" action="https://testapi.open-platform.or.kr/oauth/2.0/authorize2">
 					<input type="hidden" name="response_type" value="code"> 
 					<input type="hidden" name="client_id" value="l7xx1a592643436f43169b078251f7258c59"> 
@@ -97,10 +96,7 @@
 																 background-color: white;"/>
 					
 				</form>
-			</div>
-			</div>
-		</div>
-		
+			</div> -->
 
 </body>
 </html>

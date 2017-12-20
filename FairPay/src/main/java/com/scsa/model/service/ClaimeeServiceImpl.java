@@ -1,5 +1,7 @@
 package com.scsa.model.service;
 
+import java.util.List;
+
 import com.scsa.model.dao.ClaimeeDAO;
 import com.scsa.model.vo.ClaimInfo;
 import com.scsa.model.vo.ClaimeeInfo;
@@ -30,6 +32,11 @@ public class ClaimeeServiceImpl implements ClaimeeService {
 	@Override
 	public ClaimInfo getClaimeeByPaymentId(String paymentId) {
 		return claimeeDao.selectClaimeeByPaymentId(paymentId);
+	}
+
+	@Override
+	public List<ClaimInfo> getClaimeeListByPaymentId(String[] paymentIdList) {
+		return claimeeDao.selectClaimeeListByPaymentId(paymentIdList);
 	}
 	
 }

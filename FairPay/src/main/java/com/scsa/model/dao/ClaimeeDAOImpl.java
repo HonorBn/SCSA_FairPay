@@ -1,5 +1,7 @@
 package com.scsa.model.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.session.SqlSession;
 
 import com.scsa.model.vo.ClaimInfo;
@@ -34,6 +36,11 @@ public class ClaimeeDAOImpl implements ClaimeeDAO {
 	@Override
 	public ClaimInfo selectClaimeeByPaymentId(String paymentId) {
 		return sqlSession.selectOne("claimee.selectClaimeeByPaymentId", paymentId);
+	}
+
+	@Override
+	public List<ClaimInfo> selectClaimeeListByPaymentId(String[] paymentIdList) {
+		return sqlSession.selectList("claimee.selectClaimeeByPaymentId", paymentIdList);
 	}
 	
 }

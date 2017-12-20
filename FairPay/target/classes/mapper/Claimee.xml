@@ -18,7 +18,13 @@
 		update claimeeInfo
 		set paymentDate = #{paymentDate}, isPaid = #{isPaid}, claimee_accountNumber = #{account.accountNumber}
 		where claimeeId = #{claimee.userId} 
-	</update> 
+	</update>
+	
+	<update id="updateClaimeeList" parameterType="map"> 
+		update claimeeInfo
+		set paymentDate = #{paymentDate}, isPaid = #{isPaid}, claimee_accountNumber = #{account.accountNumber}
+		where claimeeId = #{claimee.userId} 
+	</update>
 
 	<delete id="deleteClaimee" parameterType="String">
 		delete from claimeeInfo
@@ -30,5 +36,16 @@
 		from	claimview
 		where	paymentId = #{paymentId}
 	</select>
-		
+	
+	
+	<select id="selectClaimeeListByPaymentId" parameterType="map" resultMap="claim.ClaimDetailResultMap">
+		select	*
+		from	claimview
+		<if test="array != null and array.length >= 1">
+			where	paymentId in
+			<foreach collection="array" item="item" open="(" close=")" separator=",">
+				#{item}
+			</foreach>
+		</if>
+	</select>	
 </mapper>

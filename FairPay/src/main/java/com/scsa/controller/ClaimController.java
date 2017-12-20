@@ -89,13 +89,10 @@ public class ClaimController {
 	
 	// 피청구 수정 (청구 납부 완료했을 때)
 	@RequestMapping(value = "/claim", method = RequestMethod.PUT)
-	public void updateClaimee(@RequestBody Pay pay) {
-
-		// 입출금 정보 추출
-		ClaimInfo claim = claimeeService.getClaimeeByPaymentId(pay.getPaymentId());
+	public void updateClaimee(@RequestBody String[] paymentIdList) {
 		
-		ClaimeeInfo claimee = claim.getClaimeeList().get(0);
-		claimee.getAccount().setAccountNumber(pay.getClaimee_accountNumber());
+		// 피청구 아이디로 데이터 가져오기
+		List<ClaimInfo> claimList = claimeeService.getClaimeeListByPaymentId(paymentIdList);
 		
 		/*
 		 * 출금 API 호출
@@ -103,13 +100,14 @@ public class ClaimController {
 		 * 입금 API 호출
 		 * Input : claimee (이용기관 accessToken, 입금이체용암호문구, 출금계좌인자내역, 입금계좌 핀테크번호, 임금계좌인자내역, 거래금액, 요청일시)
 		 */
-		bankAPIService.transfer(claim);
+		bankAPIService.transfer(claimList);
 		
-		claimee.setIsPaid(1);
-		claimee.setPaymentDate(new Date(System.currentTimeMillis()).toString());
-
-		claimeeService.updateClaimee(claimee);
-		
+		for (ClaimInfo claim : claimList) {
+			ClaimeeInfo claimee = claim.getClaimeeList().get(0);
+			claimee.setIsPaid(1);
+			claimee.setPaymentDate(new Date(System.currentTimeMillis()).toString());
+			claimeeService.updateClaimee(claimee);
+		}
 	}
 	
 	@RequestMapping(value = "/mine", method = RequestMethod.POST)
@@ -118,7 +116,10 @@ public class ClaimController {
 		System.out.println("내 아이디로 청구 피청구 리스트 조회 : " + myId);
 		List<ClaimInfo> claimList = claimService.getClaimListDetailByMyId(myId);
 		
-		System.out.println(claimList.get(0).toString());
+		for (ClaimInfo claim : claimList) {
+			System.out.println("--------------------청구 확인 ----------------");
+			System.out.println(claim.toString());
+		}
 		
 		return claimList;
 	}
@@ -140,7 +141,7 @@ public class ClaimController {
 		
 		// prepare data
 		String claimId = claim.getClaimId();
-		String claimer = claim.getClaimer().getUsername();
+		String claimer = "영빈";
 		int tokenSize = claimeeList.size();
 		String[] tokenList = new String[tokenSize];
 		for (int i = 0; i < tokenSize; i++) 
@@ -196,7 +197,7 @@ public class ClaimController {
 	    
 	    // HTTP request
 	    JSONObject data = new JSONObject();
-	    data.put("message", claimer + "님이 새로운 청구를 요청했습니다");
+	    data.put("message","영빈님이 새로운 청구를 요청했습니다");
 	    payload = new JSONObject();
 	    payload.put("to", notificationKey);
 	    payload.put("data", data);
