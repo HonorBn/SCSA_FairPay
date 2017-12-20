@@ -1,13 +1,21 @@
 package com.scsa.controller;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -32,20 +40,46 @@ public class ReceiptController {
 	}
 
 	@RequestMapping(value="/image/springrest/register", method=RequestMethod.POST)
-	public String upload(@RequestParam("file") MultipartFile image) throws IllegalStateException, IOException{
+	public String upload(@RequestParam("file") MultipartFile image, 
+			@RequestParam("claimId") String claimId,
+			@RequestParam("isClaim") String isClaim) throws IllegalStateException, IOException{
 		System.out.println("이미지 업로드 요청 발생 : "+image.getOriginalFilename());
+		System.out.println(claimId);
+		System.out.println(isClaim);
+		ReceiptInfo receipt = new ReceiptInfo(claimId, isClaim);
 		String saveDir = servletContext.getRealPath("/images");
 		File file = new File(saveDir+"/"+image.getOriginalFilename());
 		
 		if(!file.exists()){
 			image.transferTo(file);
-		//	model.addAttribute("fileName",image.getOriginalFilename());
+			receipt.setReceiptImg(image.getOriginalFilename());
+			receiptService.createReceipt(receipt);
 		} else {
-			// file rename 알고리즘 구현할 것, 그 후 transfer..
 			System.out.println("같은 이름의 파일이 이미 존재함!");
 		}
 		
 		return "confirm";
+	}
+	
+	@RequestMapping(value = "/image/download/{claimId}", method = RequestMethod.GET)
+	public ResponseEntity<byte[]> download(@PathVariable String claimId) throws Exception {
+		System.out.println("사진 다운로드 요청 발생 : "+claimId);
+		List<ReceiptInfo> list = new ArrayList<ReceiptInfo>();
+		list = receiptService.searchReceiptList(claimId);
+		String saveDir = servletContext.getRealPath("/images");
+		File file;
+		if(list.size()==0 || list==null){
+			file = new File(saveDir+"/"+"basicImage.jpg");
+		} else {
+			file = new File(saveDir+"/"+list.get(list.size()-1).getReceiptImg());
+			System.out.println("사진 경로 : "+saveDir+"/"+list.get(list.size()-1).getReceiptImg());
+		}
+		InputStream inputStream = new FileInputStream(file); 
+        byte[] out=org.apache.commons.io.IOUtils.toByteArray(inputStream);
+
+	    HttpHeaders responseHeaders = new HttpHeaders();
+	    responseHeaders.set("Content-disposition", "attachment; filename="+file);
+	    return new ResponseEntity<byte[]>(out, responseHeaders, HttpStatus.OK);
 	}
 	
 
@@ -89,10 +123,5 @@ public class ReceiptController {
 	}
 	
 	
-	// 구현해야함 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	// 영수증 인식 ( 영수증 이미지 경로 )
-	@RequestMapping(value = "/recog_receipt.do")
-	public String recog_receipt(Model model, String receiptId) {
-		return "receipt_list";
-	}
+	
 }
